@@ -101,7 +101,7 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
     return (
         <div className="split-editor">
             <div className="split-editor__payer">
-                <label className="split-editor__payer-label">Paid by</label>
+                <label className="split-editor__payer-label">paid by</label>
                 <select
                     className="split-editor__payer-select"
                     value={paidBy ?? ""}
@@ -132,7 +132,7 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                     </button>
                 </div>
                 <button className="btn btn-secondary" onClick={handleSplitEqually}>
-                    Split equally
+                    split equally
                 </button>
             </div>
 
@@ -191,10 +191,10 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                     onClick={() => onSave(draft, paidBy)}
                     disabled={error !== null}
                 >
-                    Save
+                    save
                 </button>
                 <button className="btn btn-secondary" onClick={onCancel}>
-                    Cancel
+                    cancel
                 </button>
             </div>
         </div>

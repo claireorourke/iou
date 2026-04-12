@@ -17,7 +17,7 @@ export function ImportTab({ people, csvSession, onSessionChange, onCommit }: Pro
         return (
             <div className="card">
                 <div className="empty-state">
-                    <p>Add people on the People tab before importing transactions.</p>
+                    <p>add people on the people tab before importing transactions.</p>
                 </div>
             </div>
         );
@@ -26,7 +26,7 @@ export function ImportTab({ people, csvSession, onSessionChange, onCommit }: Pro
     if (csvSession === null) {
         return (
             <div className="card">
-                <h2 className="section-title">Import CSV</h2>
+                <h2 className="section-title">import csv</h2>
                 <CsvUploader
                     onParsed={(session) => onSessionChange(session)}
                 />

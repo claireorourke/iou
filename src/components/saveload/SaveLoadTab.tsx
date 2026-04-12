@@ -51,30 +51,30 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
 
     return (
         <div className="card">
-            <h2 className="section-title">Save / Load</h2>
+            <h2 className="section-title">save / load</h2>
             <div className="saveload-section">
                 <div className="saveload-block">
-                    <h3>Export</h3>
+                    <h3>export</h3>
                     <p>
                         Download the current state as a JSON file. Current state has {peopleCount}{" "}
                         {peopleCount === 1 ? "person" : "people"} and {txCount}{" "}
                         {txCount === 1 ? "transaction" : "transactions"}.
                     </p>
                     <button className="btn btn-primary" onClick={handleExport}>
-                        Download iou-state.json
+                        download iou-state.json
                     </button>
                 </div>
 
                 <hr style={{ border: "none", borderTop: "1px solid var(--color-border)" }} />
 
                 <div className="saveload-block">
-                    <h3>Import</h3>
+                    <h3>import</h3>
                     <p>
                         Load a previously saved JSON file. This will replace the current state.
                     </p>
                     <label>
                         <span className="btn btn-secondary" style={{ cursor: "pointer" }}>
-                            Choose JSON File
+                            choose json file
                         </span>
                         <input
                             type="file"

@@ -98,7 +98,7 @@ export function App(): React.JSX.Element {
     return (
         <div className="app">
             <header className="app-header">
-                <h1>IOU</h1>
+                <h1>iou</h1>
             </header>
             <TabBar activeTab={activeTab} onTabChange={setActiveTab} />
             <main className="app-content">

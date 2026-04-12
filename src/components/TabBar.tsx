@@ -8,11 +8,11 @@ interface Props {
 }
 
 const TABS: { id: Tab; label: string }[] = [
-    { id: "people", label: "People" },
-    { id: "import", label: "Import CSV" },
-    { id: "transactions", label: "Transactions" },
-    { id: "summary", label: "Summary" },
-    { id: "saveload", label: "Save / Load" },
+    { id: "people", label: "people" },
+    { id: "import", label: "import csv" },
+    { id: "transactions", label: "transactions" },
+    { id: "summary", label: "summary" },
+    { id: "saveload", label: "save / load" },
 ];
 
 export function TabBar({ activeTab, onTabChange }: Props): React.JSX.Element {

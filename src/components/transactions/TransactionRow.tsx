@@ -68,14 +68,14 @@ export function TransactionRow({
                                 className="btn btn-primary"
                                 onClick={() => onConfirm(transaction.id)}
                             >
-                                Confirm
+                                confirm
                             </button>
                         )}
                         <button
                             className="btn btn-secondary"
                             onClick={() => setEditing((v) => !v)}
                         >
-                            {editing ? "Close" : "Edit splits"}
+                            {editing ? "close" : "edit splits"}
                         </button>
                         <button
                             className="btn btn-ghost"
@@ -130,7 +130,7 @@ export function TransactionRow({
                             className="btn btn-secondary btn-sm"
                             onClick={() => onConfirm(transaction.id)}
                         >
-                            Confirm
+                            confirm
                         </button>
                     )}
                     <button

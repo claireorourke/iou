@@ -23,7 +23,7 @@ export function PeopleTab({ people, onAdd, onRemove }: Props): React.JSX.Element
 
     return (
         <div className="card">
-            <h2 className="section-title">People</h2>
+            <h2 className="section-title">people</h2>
             <div className="people-add-row">
                 <input
                     type="text"
@@ -37,12 +37,12 @@ export function PeopleTab({ people, onAdd, onRemove }: Props): React.JSX.Element
                     onClick={handleAdd}
                     disabled={inputValue.trim() === ""}
                 >
-                    Add Person
+                    add person
                 </button>
             </div>
             {people.length === 0 ? (
                 <div className="empty-state">
-                    <p>No people added yet. Add someone above to get started.</p>
+                    <p>no people added yet. add someone above to get started.</p>
                 </div>
             ) : (
                 <div className="people-list">

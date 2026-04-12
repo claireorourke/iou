@@ -31,14 +31,14 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
 
     return (
         <div className="import-section">
-            <h3 className="section-title">Map Columns</h3>
+            <h3 className="section-title">map columns</h3>
             <p className="info-msg" style={{ marginBottom: 16 }}>
                 Select which CSV column corresponds to each field. Name and Amount are required.
             </p>
 
             <div className="column-mapper card">
                 <div className="column-mapper__row">
-                    <span className="column-mapper__label">Transaction name *</span>
+                    <span className="column-mapper__label">transaction name *</span>
                     <select
                         className="column-mapper__select"
                         value={colVal(mapping.nameCol)}
@@ -53,7 +53,7 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
                     </select>
                 </div>
                 <div className="column-mapper__row">
-                    <span className="column-mapper__label">Amount *</span>
+                    <span className="column-mapper__label">amount *</span>
                     <select
                         className="column-mapper__select"
                         value={colVal(mapping.amountCol)}
@@ -68,7 +68,7 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
                     </select>
                 </div>
                 <div className="column-mapper__row">
-                    <span className="column-mapper__label">Date / time</span>
+                    <span className="column-mapper__label">date / time</span>
                     <select
                         className="column-mapper__select"
                         value={colVal(mapping.datetimeCol)}
@@ -132,14 +132,14 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
 
             <div style={{ display: "flex", gap: 8, marginTop: 8 }}>
                 <button className="btn btn-secondary" onClick={onBack}>
-                    ← Back
+                    ← back
                 </button>
                 <button
                     className="btn btn-primary"
                     onClick={onConfirm}
                     disabled={mapping.nameCol === null || mapping.amountCol === null}
                 >
-                    Continue →
+                    continue →
                 </button>
             </div>
         </div>

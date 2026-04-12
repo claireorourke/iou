@@ -66,11 +66,11 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
     return (
         <div className="import-section">
             <div className="upload-area" onDrop={handleDrop} onDragOver={handleDragOver}>
-                <p>Drag and drop a CSV file here, or</p>
+                <p>drag and drop a CSV file here, or</p>
                 <p style={{ marginTop: 12 }}>
                     <label>
                         <span className="btn btn-primary" style={{ cursor: "pointer" }}>
-                            Choose File
+                            choose file
                         </span>
                         <input type="file" accept=".csv,text/csv" onChange={handleChange} />
                     </label>

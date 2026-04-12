@@ -24,7 +24,7 @@ export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Eleme
     const total = slices.reduce((acc, s) => acc + s.amount, 0);
 
     if (total === 0 || slices.length === 0) {
-        return <p className="info-msg">No confirmed spending to chart.</p>;
+        return <p className="info-msg">no confirmed spending to chart.</p>;
     }
 
     const cx = size / 2;

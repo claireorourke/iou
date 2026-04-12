@@ -26,7 +26,7 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
         return (
             <div className="card">
                 <div className="empty-state">
-                    <p>Add people and transactions to see a summary.</p>
+                    <p>add people and transactions to see a summary.</p>
                 </div>
             </div>
         );
@@ -53,14 +53,14 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
 
     return (
         <div className="card">
-            <h2 className="section-title">Balance Summary (Confirmed)</h2>
+            <h2 className="section-title">balance summary (confirmed)</h2>
             <div className="summary-layout">
                 <SpendingPieChart slices={slices} />
                 <table className="data-table" style={{ flex: 1, minWidth: 240 }}>
                     <thead>
                         <tr>
-                            <th>Person</th>
-                            <th style={{ textAlign: "right" }}>Net Balance</th>
+                            <th>person</th>
+                            <th style={{ textAlign: "right" }}>net balance</th>
                         </tr>
                     </thead>
                     <tbody>

@@ -109,7 +109,7 @@ export function TransactionsTab({
         return (
             <div className="card">
                 <div className="empty-state">
-                    <p>No transactions yet. Import a CSV to get started.</p>
+                    <p>no transactions yet. import a CSV to get started.</p>
                 </div>
             </div>
         );
@@ -159,13 +159,13 @@ export function TransactionsTab({
                 <div className="tx-bulk-bar">
                     <span>{selectedIds.size} selected</span>
                     <button className="btn btn-danger btn-sm" onClick={handleDeleteSelected}>
-                        Delete selected ({selectedIds.size})
+                        delete selected ({selectedIds.size})
                     </button>
                     <button
                         className="btn btn-ghost btn-sm"
                         onClick={() => setSelectedIds(new Set())}
                     >
-                        Clear selection
+                        clear selection
                     </button>
                 </div>
             )}
@@ -174,7 +174,7 @@ export function TransactionsTab({
                 {/* Next Pending */}
                 <div className="tx-section">
                     <div className="tx-section-header">
-                        <span className="tx-section-title">Next Pending</span>
+                        <span className="tx-section-title">next pending</span>
                     </div>
                     {featuredTx !== null ? (
                         <TransactionRow
@@ -189,7 +189,7 @@ export function TransactionsTab({
                     ) : (
                         <div className="card">
                             <div className="empty-state">
-                                <p>No pending transactions — you're all caught up.</p>
+                                <p>no pending transactions — you're all caught up.</p>
                             </div>
                         </div>
                     )}
@@ -206,7 +206,7 @@ export function TransactionsTab({
                                     onChange={() => toggleSelectAll(remainingPending)}
                                 />
                                 <span className="tx-section-title">
-                                    Pending ({remainingPending.length})
+                                    pending ({remainingPending.length})
                                 </span>
                             </label>
                         </div>
@@ -224,12 +224,12 @@ export function TransactionsTab({
                                 onChange={() => toggleSelectAll(confirmed)}
                             />
                             <span className="tx-section-title">
-                                Confirmed ({confirmed.length})
+                                confirmed ({confirmed.length})
                             </span>
                         </label>
                     </div>
                     {confirmed.length === 0 ? (
-                        <p className="info-msg">No confirmed transactions yet.</p>
+                        <p className="info-msg">no confirmed transactions yet.</p>
                     ) : (
                         renderGrouped(confirmedGroups)
                     )}

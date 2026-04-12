@@ -22,7 +22,7 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
 
     return (
         <div className="import-section">
-            <h3 className="section-title">Preview</h3>
+            <h3 className="section-title">preview</h3>
 
             {invalid.length > 0 && (
                 <p className="error-msg" style={{ marginBottom: 12 }}>
@@ -36,11 +36,11 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
                     <table className="data-table">
                         <thead>
                             <tr>
-                                <th>Name</th>
-                                <th>Date</th>
-                                <th>Amount</th>
-                                {hasPayer && <th>Paid by</th>}
-                                <th>Status</th>
+                                <th>name</th>
+                                <th>date</th>
+                                <th>amount</th>
+                                {hasPayer && <th>paid by</th>}
+                                <th>status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -59,7 +59,7 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
                                         )}
                                         <td>
                                             {bad ? (
-                                                "Invalid amount"
+                                                "invalid amount"
                                             ) : tx.status === "confirmed" ? (
                                                 <span style={{ color: "var(--color-success)", fontWeight: 600 }}>confirmed</span>
                                             ) : (
@@ -76,17 +76,17 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
 
             <div className="import-actions">
                 <button className="btn btn-secondary" onClick={onBack}>
-                    ← Back
+                    ← back
                 </button>
                 <button
                     className="btn btn-primary"
                     onClick={onConfirm}
                     disabled={valid.length === 0}
                 >
-                    Import {valid.length} transaction{valid.length !== 1 ? "s" : ""}
+                    import {valid.length} transaction{valid.length !== 1 ? "s" : ""}
                 </button>
                 {valid.length === 0 && (
-                    <span className="error-msg">No valid rows to import.</span>
+                    <span className="error-msg">no valid rows to import.</span>
                 )}
             </div>
         </div>
