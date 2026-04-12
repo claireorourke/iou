@@ -17,7 +17,8 @@ const NAME_W = 120;
 const BAR_HALF = 140; // max bar extent each side of zero
 const LABEL_GAP = 6;
 const LABEL_W = 54; // reserved for amount text
-const TOTAL_W = NAME_W + 1 + BAR_HALF * 2 + LABEL_W * 2; // 1 = zero line
+const HALF_W = LABEL_W + LABEL_GAP + BAR_HALF;
+const TOTAL_W = NAME_W + 1 + HALF_W * 2; // 1 = zero line
 
 const COLOR_POS = "#00897b";
 const COLOR_NEG = "#ff5722";
@@ -30,7 +31,7 @@ export function BalanceBarChart({ rows }: Props): React.JSX.Element {
     const totalH = rows.length * ROW_H + PAD_Y * 2;
 
     // x coordinate of the zero line
-    const zeroX = NAME_W + LABEL_W + BAR_HALF;
+    const zeroX = NAME_W + HALF_W;
 
     return (
         <svg

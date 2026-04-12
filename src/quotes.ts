@@ -55,7 +55,7 @@ export const quotes = [
     },
     {
         quote: "There's only one thing I like better than money. Revenge.",
-        character: "Sykes",
+        character: "Lola",
         source: "Shark Tale",
         url: "https://www.youtube.com/watch?v=PyypLt2m0EY",
     },
