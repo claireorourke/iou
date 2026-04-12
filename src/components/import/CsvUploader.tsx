@@ -22,7 +22,9 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
                 const firstRow = allRows[0] ?? [];
                 // Heuristic: if first row looks like headers (no numbers), use it
                 const looksLikeHeader = firstRow.every(
-                    (cell) => isNaN(parseFloat(cell.replace(/[^0-9.\-]/g, ""))) || cell.trim() === ""
+                    (cell) =>
+                        isNaN(parseFloat(cell.replace(/[^0-9.\-]/g, ""))) ||
+                        cell.trim() === "",
                 );
                 let headers: string[];
                 let rawRows: string[][];
@@ -36,7 +38,12 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
                 onParsed({
                     rawRows,
                     headers,
-                    mapping: { nameCol: null, datetimeCol: null, amountCol: null, payerCol: null },
+                    mapping: {
+                        nameCol: null,
+                        datetimeCol: null,
+                        amountCol: null,
+                        payerCol: null,
+                    },
                     mappingConfirmed: false,
                     preview: [],
                 });
@@ -65,14 +72,25 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
 
     return (
         <div className="import-section">
-            <div className="upload-area" onDrop={handleDrop} onDragOver={handleDragOver}>
-                <p>drag and drop a CSV file here, or</p>
+            <div
+                className="upload-area"
+                onDrop={handleDrop}
+                onDragOver={handleDragOver}
+            >
+                <p>drag and drop a csv file here, or</p>
                 <p style={{ marginTop: 12 }}>
                     <label>
-                        <span className="btn btn-primary" style={{ cursor: "pointer" }}>
+                        <span
+                            className="btn btn-primary"
+                            style={{ cursor: "pointer" }}
+                        >
                             choose file
                         </span>
-                        <input type="file" accept=".csv,text/csv" onChange={handleChange} />
+                        <input
+                            type="file"
+                            accept=".csv,text/csv"
+                            onChange={handleChange}
+                        />
                     </label>
                 </p>
             </div>

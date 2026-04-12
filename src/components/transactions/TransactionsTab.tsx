@@ -5,7 +5,11 @@ import { TransactionRow } from "./TransactionRow.js";
 interface Props {
     transactions: Transaction[];
     people: Person[];
-    onUpdate: (id: string, splits: SplitEntry[], paidBy: PersonId | null) => void;
+    onUpdate: (
+        id: string,
+        splits: SplitEntry[],
+        paidBy: PersonId | null,
+    ) => void;
     onDelete: (id: string) => void;
     onConfirm: (id: string) => void;
     onDeleteMany: (ids: ReadonlySet<string>) => void;
@@ -27,10 +31,13 @@ function monthKey(datetime: string): string {
 function formatMonthKey(key: string): string {
     if (key === "undated") return "Undated";
     const [year, month] = key.split("-");
-    return new Date(Number(year), Number(month) - 1).toLocaleDateString("en-US", {
-        month: "long",
-        year: "numeric",
-    });
+    return new Date(Number(year), Number(month) - 1).toLocaleDateString(
+        "en-US",
+        {
+            month: "long",
+            year: "numeric",
+        },
+    );
 }
 
 function groupByMonth(txs: Transaction[]): MonthGroup[] {
@@ -46,7 +53,11 @@ function groupByMonth(txs: Transaction[]): MonthGroup[] {
             if (b === "undated") return -1;
             return a.localeCompare(b);
         })
-        .map((key) => ({ key, label: formatMonthKey(key), items: buckets.get(key)! }));
+        .map((key) => ({
+            key,
+            label: formatMonthKey(key),
+            items: buckets.get(key)!,
+        }));
 }
 
 export function TransactionsTab({
@@ -57,7 +68,9 @@ export function TransactionsTab({
     onConfirm,
     onDeleteMany,
 }: Props): React.JSX.Element {
-    const [selectedIds, setSelectedIds] = React.useState<Set<string>>(new Set());
+    const [selectedIds, setSelectedIds] = React.useState<Set<string>>(
+        new Set(),
+    );
 
     React.useEffect(() => {
         const txIds = new Set(transactions.map((tx) => tx.id));
@@ -93,7 +106,8 @@ export function TransactionsTab({
     }
 
     function toggleSelectAll(group: Transaction[]): void {
-        const allSelected = group.length > 0 && group.every((tx) => selectedIds.has(tx.id));
+        const allSelected =
+            group.length > 0 && group.every((tx) => selectedIds.has(tx.id));
         setSelectedIds((prev) => {
             const next = new Set(prev);
             if (allSelected) {
@@ -121,7 +135,8 @@ export function TransactionsTab({
     }
 
     const pendingAllSelected =
-        remainingPending.length > 0 && remainingPending.every((tx) => selectedIds.has(tx.id));
+        remainingPending.length > 0 &&
+        remainingPending.every((tx) => selectedIds.has(tx.id));
     const confirmedAllSelected =
         confirmed.length > 0 && confirmed.every((tx) => selectedIds.has(tx.id));
 
@@ -163,7 +178,10 @@ export function TransactionsTab({
             {selectedIds.size > 0 && (
                 <div className="tx-bulk-bar">
                     <span>{selectedIds.size} selected</span>
-                    <button className="btn btn-danger btn-sm" onClick={handleDeleteSelected}>
+                    <button
+                        className="btn btn-danger btn-sm"
+                        onClick={handleDeleteSelected}
+                    >
                         delete selected ({selectedIds.size})
                     </button>
                     <button
@@ -194,7 +212,10 @@ export function TransactionsTab({
                     ) : (
                         <div className="card">
                             <div className="empty-state">
-                                <p>no pending transactions — you're all caught up.</p>
+                                <p>
+                                    no pending transactions - you're all caught
+                                    up.
+                                </p>
                             </div>
                         </div>
                     )}
@@ -208,7 +229,9 @@ export function TransactionsTab({
                                 <input
                                     type="checkbox"
                                     checked={pendingAllSelected}
-                                    onChange={() => toggleSelectAll(remainingPending)}
+                                    onChange={() =>
+                                        toggleSelectAll(remainingPending)
+                                    }
                                 />
                                 <span className="tx-section-title">
                                     pending ({remainingPending.length})
@@ -234,7 +257,9 @@ export function TransactionsTab({
                         </label>
                     </div>
                     {confirmed.length === 0 ? (
-                        <p className="info-msg">no confirmed transactions yet.</p>
+                        <p className="info-msg">
+                            no confirmed transactions yet.
+                        </p>
                     ) : (
                         renderGrouped(confirmedGroups)
                     )}

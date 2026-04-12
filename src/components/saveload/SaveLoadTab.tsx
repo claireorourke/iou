@@ -11,8 +11,33 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
     const [loadError, setLoadError] = React.useState<string | null>(null);
     const [loadSuccess, setLoadSuccess] = React.useState(false);
 
-    function handleExport(): void {
+    async function handleExport(): Promise<void> {
         const json = JSON.stringify(state, null, 2);
+        if ("showSaveFilePicker" in window) {
+            try {
+                const handle = await (
+                    window as Window & {
+                        showSaveFilePicker: (
+                            opts: object,
+                        ) => Promise<FileSystemFileHandle>;
+                    }
+                ).showSaveFilePicker({
+                    suggestedName: "iou-state.json",
+                    types: [
+                        {
+                            description: "JSON file",
+                            accept: { "application/json": [".json"] },
+                        },
+                    ],
+                });
+                const writable = await handle.createWritable();
+                await writable.write(json);
+                await writable.close();
+                return;
+            } catch (err) {
+                if (err instanceof Error && err.name === "AbortError") return;
+            }
+        }
         const blob = new Blob([json], { type: "application/json" });
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
@@ -31,7 +56,8 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
         reader.onload = (ev) => {
             try {
                 const text = ev.target?.result;
-                if (typeof text !== "string") throw new Error("Could not read file");
+                if (typeof text !== "string")
+                    throw new Error("Could not read file");
                 const parsed: unknown = JSON.parse(text);
                 const loaded = validateAppState(parsed);
                 onLoad(loaded);
@@ -39,7 +65,9 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                 setLoadSuccess(true);
                 setTimeout(() => setLoadSuccess(false), 3000);
             } catch (err) {
-                setLoadError(err instanceof Error ? err.message : "Unknown error");
+                setLoadError(
+                    err instanceof Error ? err.message : "Unknown error",
+                );
                 setLoadSuccess(false);
             }
         };
@@ -55,25 +83,31 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
             <div className="saveload-section">
                 <div className="saveload-block">
                     <h3>export</h3>
-                    <p>
-                        Download the current state as a JSON file. Current state has {peopleCount}{" "}
-                        {peopleCount === 1 ? "person" : "people"} and {txCount}{" "}
-                        {txCount === 1 ? "transaction" : "transactions"}.
-                    </p>
-                    <button className="btn btn-primary" onClick={handleExport}>
-                        download iou-state.json
+                    <p>download the current state as a json file.</p>
+                    <button
+                        className="btn btn-primary"
+                        style={{ alignSelf: "flex-start" }}
+                        onClick={handleExport}
+                    >
+                        choose save location
                     </button>
                 </div>
 
-                <hr style={{ border: "none", borderTop: "1px solid var(--color-border)" }} />
+                <hr
+                    style={{
+                        border: "none",
+                        borderTop: "1px solid var(--color-border)",
+                    }}
+                />
 
                 <div className="saveload-block">
                     <h3>import</h3>
-                    <p>
-                        Load a previously saved JSON file. This will replace the current state.
-                    </p>
-                    <label>
-                        <span className="btn btn-secondary" style={{ cursor: "pointer" }}>
+                    <p>load a previously saved json file.</p>
+                    <label style={{ alignSelf: "flex-start" }}>
+                        <span
+                            className="btn btn-secondary"
+                            style={{ cursor: "pointer" }}
+                        >
                             choose json file
                         </span>
                         <input
@@ -89,7 +123,13 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                         </p>
                     )}
                     {loadSuccess && (
-                        <p style={{ color: "var(--color-success)", marginTop: 10, fontSize: 13 }}>
+                        <p
+                            style={{
+                                color: "var(--color-success)",
+                                marginTop: 10,
+                                fontSize: 13,
+                            }}
+                        >
                             State loaded successfully.
                         </p>
                     )}

@@ -34,7 +34,7 @@ export function App(): React.JSX.Element {
             ? Math.floor(Math.random() * quotes.length)
             : (parseInt(stored, 10) + 1) % quotes.length;
         localStorage.setItem("iou-quote-index", String(next));
-        return quotes[next];
+        return quotes[next]!;
     }, []);
 
     React.useEffect(() => {
@@ -148,6 +148,34 @@ export function App(): React.JSX.Element {
                 {activeTab === "summary" && <SummaryTab state={state} />}
                 {activeTab === "saveload" && (
                     <SaveLoadTab state={state} onLoad={importState} />
+                )}
+                {activeTab === "people" && (
+                    <div className="tab-next-row">
+                        <button className="btn btn-primary" onClick={() => setActiveTab("import")}>
+                            next: import →
+                        </button>
+                    </div>
+                )}
+                {activeTab === "import" && csvSession === null && (
+                    <div className="tab-next-row">
+                        <button className="btn btn-primary" onClick={() => setActiveTab("transactions")}>
+                            next: transactions →
+                        </button>
+                    </div>
+                )}
+                {activeTab === "transactions" && (
+                    <div className="tab-next-row">
+                        <button className="btn btn-primary" onClick={() => setActiveTab("summary")}>
+                            next: summary →
+                        </button>
+                    </div>
+                )}
+                {activeTab === "summary" && (
+                    <div className="tab-next-row">
+                        <button className="btn btn-primary" onClick={() => setActiveTab("saveload")}>
+                            next: save / load →
+                        </button>
+                    </div>
                 )}
             </main>
             <ScrollToTop />
