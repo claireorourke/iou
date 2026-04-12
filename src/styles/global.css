@@ -312,6 +312,7 @@ select:focus {
     border-radius: var(--radius);
     padding: 20px;
     box-shadow: var(--shadow);
+    overflow-x: hidden;
 }
 
 /* Section header */
@@ -418,6 +419,7 @@ select:focus {
 .add-tx-form__amount,
 .add-tx-form__date {
     grid-column: 1 / -1;
+    min-width: 0;
 }
 
 .add-tx-form__paidby {
@@ -438,6 +440,7 @@ select:focus {
 .add-tx-form__date input,
 .add-tx-form input {
     width: 100%;
+    min-width: 0;
     box-sizing: border-box;
 }
 
