@@ -47,7 +47,24 @@ export function App(): React.JSX.Element {
     React.useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }, [state]);
-    const [activeTab, setActiveTab] = React.useState<Tab>("people");
+    const VALID_TABS: Tab[] = [
+        "people",
+        "import",
+        "split",
+        "summary",
+        "saveload",
+    ];
+    const initialTab = (): Tab => {
+        const param = new URLSearchParams(window.location.search).get("tab");
+        return VALID_TABS.includes(param as Tab) ? (param as Tab) : "people";
+    };
+    const [activeTab, setActiveTabState] = React.useState<Tab>(initialTab);
+    const setActiveTab = React.useCallback((tab: Tab) => {
+        setActiveTabState(tab);
+        const url = new URL(window.location.href);
+        url.searchParams.set("tab", tab);
+        window.history.replaceState(null, "", url);
+    }, []);
     const [csvSession, setCsvSession] = React.useState<CsvImportSession | null>(
         null,
     );
