@@ -15,12 +15,23 @@ interface Props {
 
 const TWO_PI = 2 * Math.PI;
 
-function polarToCartesian(cx: number, cy: number, r: number, angle: number): [number, number] {
+function polarToCartesian(
+    cx: number,
+    cy: number,
+    r: number,
+    angle: number,
+): [number, number] {
     // angle 0 = top (subtract π/2 to start at top)
-    return [cx + r * Math.cos(angle - Math.PI / 2), cy + r * Math.sin(angle - Math.PI / 2)];
+    return [
+        cx + r * Math.cos(angle - Math.PI / 2),
+        cy + r * Math.sin(angle - Math.PI / 2),
+    ];
 }
 
-export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Element {
+export function SpendingPieChart({
+    slices,
+    size = 200,
+}: Props): React.JSX.Element {
     const total = slices.reduce((acc, s) => acc + s.amount, 0);
 
     if (total === 0 || slices.length === 0) {
@@ -35,7 +46,15 @@ export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Eleme
 
     if (slices.length === 1) {
         const slice = slices[0]!;
-        paths = [<circle key={slice.personId} cx={cx} cy={cy} r={r} fill={slice.color} />];
+        paths = [
+            <circle
+                key={slice.personId}
+                cx={cx}
+                cy={cy}
+                r={r}
+                fill={slice.color}
+            />,
+        ];
     } else {
         let cumulative = 0;
         paths = slices.map((slice) => {
@@ -54,7 +73,7 @@ export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Eleme
                 <path key={slice.personId} d={d} fill={slice.color}>
                     <title>
                         {slice.name}: ${slice.amount.toFixed(2)} (
-                        {((proportion) * 100).toFixed(1)}%)
+                        {(proportion * 100).toFixed(1)}%)
                     </title>
                 </path>
             );
@@ -62,8 +81,21 @@ export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Eleme
     }
 
     return (
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 12 }}>
-            <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`} role="img" aria-label="Spending pie chart">
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 12,
+            }}
+        >
+            <svg
+                width={size}
+                height={size}
+                viewBox={`0 0 ${size} ${size}`}
+                role="img"
+                aria-label="Spending pie chart"
+            >
                 {paths}
             </svg>
             <ul className="pie-legend">
@@ -76,7 +108,12 @@ export function SpendingPieChart({ slices, size = 200 }: Props): React.JSX.Eleme
                                 style={{ backgroundColor: slice.color }}
                             />
                             <span>{slice.name}</span>
-                            <span style={{ color: "var(--color-text-muted)", marginLeft: "auto" }}>
+                            <span
+                                style={{
+                                    color: "var(--color-text-muted)",
+                                    marginLeft: "auto",
+                                }}
+                            >
                                 ${slice.amount.toFixed(2)} · {pct}%
                             </span>
                         </li>

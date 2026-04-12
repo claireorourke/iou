@@ -1,5 +1,11 @@
 import React from "react";
-import type { Person, PersonId, SplitEntry, SplitMode, Transaction } from "../../types.js";
+import type {
+    Person,
+    PersonId,
+    SplitEntry,
+    SplitMode,
+    Transaction,
+} from "../../types.js";
 import { equalAmountSplits, equalSplits, validateSplits } from "../../utils.js";
 
 interface Props {
@@ -13,25 +19,36 @@ function initDraft(transaction: Transaction, people: Person[]): SplitEntry[] {
     if (transaction.splits.length > 0) {
         const mode = transaction.splits[0]?.mode ?? "percent";
         return people.map((p) => {
-            const existing = transaction.splits.find((s) => s.personId === p.id);
+            const existing = transaction.splits.find(
+                (s) => s.personId === p.id,
+            );
             return existing ?? { personId: p.id, mode, value: 0 };
         });
     }
     return equalSplits(people);
 }
 
-export function SplitEditor({ transaction, people, onSave, onCancel }: Props): React.JSX.Element {
+export function SplitEditor({
+    transaction,
+    people,
+    onSave,
+    onCancel,
+}: Props): React.JSX.Element {
     const [draft, setDraft] = React.useState<SplitEntry[]>(() =>
-        initDraft(transaction, people)
+        initDraft(transaction, people),
     );
-    const [paidBy, setPaidBy] = React.useState<PersonId | null>(transaction.paidBy ?? null);
+    const [paidBy, setPaidBy] = React.useState<PersonId | null>(
+        transaction.paidBy ?? null,
+    );
 
     const mode: SplitMode = draft[0]?.mode ?? "percent";
     const error = validateSplits(draft, transaction.amount);
 
     const assignedTotal = draft.reduce((acc, s) => acc + s.value, 0);
     const remaining =
-        mode === "percent" ? 100 - assignedTotal : transaction.amount - assignedTotal;
+        mode === "percent"
+            ? 100 - assignedTotal
+            : transaction.amount - assignedTotal;
     const remainingOk =
         mode === "percent"
             ? Math.abs(remaining) <= 0.01
@@ -40,7 +57,11 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
     function handleValueChange(personId: string, raw: string): void {
         const value = parseFloat(raw);
         setDraft((prev) =>
-            prev.map((s) => (s.personId === personId ? { ...s, value: isNaN(value) ? 0 : value } : s))
+            prev.map((s) =>
+                s.personId === personId
+                    ? { ...s, value: isNaN(value) ? 0 : value }
+                    : s,
+            ),
         );
     }
 
@@ -55,7 +76,7 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
             const others = prev.filter((s) => s.personId !== personId);
             if (others.length === 0) {
                 return prev.map((s) =>
-                    s.personId === personId ? { ...s, value: clamped } : s
+                    s.personId === personId ? { ...s, value: clamped } : s,
                 );
             }
             const othersTotal = others.reduce((acc, s) => acc + s.value, 0);
@@ -70,7 +91,7 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
             const diff = Math.round((remainder - roundedSum) * 100) / 100;
             rounded[rounded.length - 1] = Math.max(
                 0,
-                Math.round((rounded[rounded.length - 1]! + diff) * 100) / 100
+                Math.round((rounded[rounded.length - 1]! + diff) * 100) / 100,
             );
 
             return prev.map((s) => {
@@ -105,7 +126,9 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                 <select
                     className="split-editor__payer-select"
                     value={paidBy ?? ""}
-                    onChange={(e) => setPaidBy(e.target.value === "" ? null : e.target.value)}
+                    onChange={(e) =>
+                        setPaidBy(e.target.value === "" ? null : e.target.value)
+                    }
                 >
                     <option value="">— unset —</option>
                     {people.map((p) => (
@@ -131,7 +154,10 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                         $
                     </button>
                 </div>
-                <button className="btn btn-secondary" onClick={handleSplitEqually}>
+                <button
+                    className="btn btn-secondary"
+                    onClick={handleSplitEqually}
+                >
                     split equally
                 </button>
             </div>
@@ -140,10 +166,13 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                 {people.map((person) => {
                     const entry = draft.find((s) => s.personId === person.id);
                     const val = entry?.value ?? 0;
-                    const sliderMax = mode === "percent" ? 100 : transaction.amount;
+                    const sliderMax =
+                        mode === "percent" ? 100 : transaction.amount;
                     return (
                         <div key={person.id} className="split-editor__row">
-                            <span className="split-editor__person">{person.name}</span>
+                            <span className="split-editor__person">
+                                {person.name}
+                            </span>
                             <input
                                 type="range"
                                 className="split-editor__slider"
@@ -151,7 +180,12 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                                 max={sliderMax}
                                 step={mode === "percent" ? 0.1 : 0.01}
                                 value={val}
-                                onChange={(e) => handleSliderChange(person.id, e.target.value)}
+                                onChange={(e) =>
+                                    handleSliderChange(
+                                        person.id,
+                                        e.target.value,
+                                    )
+                                }
                             />
                             <input
                                 type="number"
@@ -160,14 +194,25 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                                 max={sliderMax}
                                 step={0.01}
                                 value={val}
-                                onChange={(e) => handleValueChange(person.id, e.target.value)}
+                                onChange={(e) =>
+                                    handleValueChange(person.id, e.target.value)
+                                }
                             />
                             <span className="split-editor__unit">
                                 {mode === "percent" ? "%" : "$"}
                             </span>
                             {mode === "percent" && (
-                                <span className="split-editor__unit" style={{ color: "var(--color-text-muted)", width: "auto" }}>
-                                    = ${((val / 100) * transaction.amount).toFixed(2)}
+                                <span
+                                    className="split-editor__unit"
+                                    style={{
+                                        color: "var(--color-text-muted)",
+                                        width: "auto",
+                                    }}
+                                >
+                                    = $
+                                    {((val / 100) * transaction.amount).toFixed(
+                                        2,
+                                    )}
                                 </span>
                             )}
                         </div>
@@ -183,7 +228,11 @@ export function SplitEditor({ transaction, people, onSave, onCancel }: Props): R
                     : `Remaining: $${remaining.toFixed(2)}`}
             </div>
 
-            {error !== null && <p className="error-msg" style={{ marginBottom: 10 }}>{error}</p>}
+            {error !== null && (
+                <p className="error-msg" style={{ marginBottom: 10 }}>
+                    {error}
+                </p>
+            )}
 
             <div className="split-editor__footer">
                 <button

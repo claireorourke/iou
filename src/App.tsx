@@ -1,5 +1,11 @@
 import React from "react";
-import type { AppState, CsvImportSession, PersonId, SplitEntry, Transaction } from "./types.js";
+import type {
+    AppState,
+    CsvImportSession,
+    PersonId,
+    SplitEntry,
+    Transaction,
+} from "./types.js";
 import { newId, validateAppState } from "./utils.js";
 import { TabBar } from "./components/TabBar.js";
 import { PeopleTab } from "./components/people/PeopleTab.js";
@@ -30,9 +36,10 @@ export function App(): React.JSX.Element {
     const [state, setState] = React.useState<AppState>(loadPersistedState);
     const quote = React.useMemo(() => {
         const stored = localStorage.getItem("iou-quote-index");
-        const next = stored === null
-            ? Math.floor(Math.random() * quotes.length)
-            : (parseInt(stored, 10) + 1) % quotes.length;
+        const next =
+            stored === null
+                ? Math.floor(Math.random() * quotes.length)
+                : (parseInt(stored, 10) + 1) % quotes.length;
         localStorage.setItem("iou-quote-index", String(next));
         return quotes[next]!;
     }, []);
@@ -41,7 +48,9 @@ export function App(): React.JSX.Element {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }, [state]);
     const [activeTab, setActiveTab] = React.useState<Tab>("people");
-    const [csvSession, setCsvSession] = React.useState<CsvImportSession | null>(null);
+    const [csvSession, setCsvSession] = React.useState<CsvImportSession | null>(
+        null,
+    );
 
     function addPerson(name: string): void {
         setState((prev) => ({
@@ -76,11 +85,15 @@ export function App(): React.JSX.Element {
         setActiveTab("transactions");
     }
 
-    function updateTransaction(id: string, splits: SplitEntry[], paidBy: PersonId | null): void {
+    function updateTransaction(
+        id: string,
+        splits: SplitEntry[],
+        paidBy: PersonId | null,
+    ): void {
         setState((prev) => ({
             ...prev,
             transactions: prev.transactions.map((tx) =>
-                tx.id === id ? { ...tx, splits, paidBy } : tx
+                tx.id === id ? { ...tx, splits, paidBy } : tx,
             ),
         }));
     }
@@ -96,7 +109,7 @@ export function App(): React.JSX.Element {
         setState((prev) => ({
             ...prev,
             transactions: prev.transactions.map((tx) =>
-                tx.id === id ? { ...tx, status: "confirmed" as const } : tx
+                tx.id === id ? { ...tx, status: "confirmed" as const } : tx,
             ),
         }));
     }
@@ -151,28 +164,40 @@ export function App(): React.JSX.Element {
                 )}
                 {activeTab === "people" && (
                     <div className="tab-next-row">
-                        <button className="btn btn-primary" onClick={() => setActiveTab("import")}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => setActiveTab("import")}
+                        >
                             next: import →
                         </button>
                     </div>
                 )}
                 {activeTab === "import" && csvSession === null && (
                     <div className="tab-next-row">
-                        <button className="btn btn-primary" onClick={() => setActiveTab("transactions")}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => setActiveTab("transactions")}
+                        >
                             next: transactions →
                         </button>
                     </div>
                 )}
                 {activeTab === "transactions" && (
                     <div className="tab-next-row">
-                        <button className="btn btn-primary" onClick={() => setActiveTab("summary")}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => setActiveTab("summary")}
+                        >
                             next: summary →
                         </button>
                     </div>
                 )}
                 {activeTab === "summary" && (
                     <div className="tab-next-row">
-                        <button className="btn btn-primary" onClick={() => setActiveTab("saveload")}>
+                        <button
+                            className="btn btn-primary"
+                            onClick={() => setActiveTab("saveload")}
+                        >
                             next: save / load →
                         </button>
                     </div>
@@ -180,9 +205,16 @@ export function App(): React.JSX.Element {
             </main>
             <ScrollToTop />
             <footer className="app-footer">
-                <a className="app-footer-quote" href={quote.url} target="_blank" rel="noopener noreferrer">
+                <a
+                    className="app-footer-quote"
+                    href={quote.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     <span>"{quote.quote}"</span>
-                    <span className="app-footer-quote__attr">— {quote.character}, <em>{quote.source}</em></span>
+                    <span className="app-footer-quote__attr">
+                        — {quote.character}, <em>{quote.source}</em>
+                    </span>
                 </a>
                 <a
                     className="github-link"
@@ -192,7 +224,12 @@ export function App(): React.JSX.Element {
                     aria-label="view source on github"
                     title="view source on github"
                 >
-                    <img src="github-mark-white.svg" alt="" width="16" height="16" />
+                    <img
+                        src="github-mark-white.svg"
+                        alt=""
+                        width="16"
+                        height="16"
+                    />
                 </a>
             </footer>
         </div>

@@ -11,14 +11,18 @@ function todayISO(): string {
     return new Date().toISOString().slice(0, 10);
 }
 
-export function AddTransactionForm({ people, onAdd }: Props): React.JSX.Element {
+export function AddTransactionForm({
+    people,
+    onAdd,
+}: Props): React.JSX.Element {
     const [name, setName] = React.useState("");
     const [amount, setAmount] = React.useState("");
     const [date, setDate] = React.useState(todayISO);
     const [paidBy, setPaidBy] = React.useState<string>("");
 
     const parsedAmount = parseFloat(amount);
-    const isValid = name.trim() !== "" && !isNaN(parsedAmount) && parsedAmount > 0;
+    const isValid =
+        name.trim() !== "" && !isNaN(parsedAmount) && parsedAmount > 0;
 
     function handleSubmit(): void {
         if (!isValid) return;

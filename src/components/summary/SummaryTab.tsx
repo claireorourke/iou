@@ -20,7 +20,9 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
 
     const confirmedState: AppState = {
         ...state,
-        transactions: state.transactions.filter((tx) => tx.status === "confirmed"),
+        transactions: state.transactions.filter(
+            (tx) => tx.status === "confirmed",
+        ),
     };
 
     const balances = computeBalances(confirmedState);
@@ -29,16 +31,28 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
     const nameById = new Map(state.people.map((p) => [p.id, p.name]));
 
     // Per-person paid and share totals
-    const totalPaid = new Map<string, number>(state.people.map((p) => [p.id, 0]));
-    const totalShare = new Map<string, number>(state.people.map((p) => [p.id, 0]));
+    const totalPaid = new Map<string, number>(
+        state.people.map((p) => [p.id, 0]),
+    );
+    const totalShare = new Map<string, number>(
+        state.people.map((p) => [p.id, 0]),
+    );
     for (const tx of confirmedState.transactions) {
         if (tx.paidBy !== null) {
-            totalPaid.set(tx.paidBy, (totalPaid.get(tx.paidBy) ?? 0) + tx.amount);
+            totalPaid.set(
+                tx.paidBy,
+                (totalPaid.get(tx.paidBy) ?? 0) + tx.amount,
+            );
         }
         for (const split of tx.splits) {
             const share =
-                split.mode === "percent" ? (split.value / 100) * tx.amount : split.value;
-            totalShare.set(split.personId, (totalShare.get(split.personId) ?? 0) + share);
+                split.mode === "percent"
+                    ? (split.value / 100) * tx.amount
+                    : split.value;
+            totalShare.set(
+                split.personId,
+                (totalShare.get(split.personId) ?? 0) + share,
+            );
         }
     }
 
@@ -63,11 +77,23 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
             <div className="card">
                 <h2 className="section-title">to settle up</h2>
                 {settlements.length === 0 ? (
-                    <p style={{ color: "var(--color-success)", fontWeight: 800, fontSize: 15 }}>
+                    <p
+                        style={{
+                            color: "var(--color-success)",
+                            fontWeight: 800,
+                            fontSize: 15,
+                        }}
+                    >
                         all settled up!
                     </p>
                 ) : (
-                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                    <div
+                        style={{
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: 10,
+                        }}
+                    >
                         {settlements.map((s, i) => (
                             <div
                                 key={i}
@@ -84,7 +110,12 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
                                 <span style={{ fontWeight: 800, fontSize: 15 }}>
                                     {nameById.get(s.fromId) ?? s.fromId}
                                 </span>
-                                <span style={{ color: "var(--color-text-muted)", fontSize: 13 }}>
+                                <span
+                                    style={{
+                                        color: "var(--color-text-muted)",
+                                        fontSize: 13,
+                                    }}
+                                >
                                     owes
                                 </span>
                                 <span style={{ fontWeight: 800, fontSize: 15 }}>
@@ -105,7 +136,13 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
                         ))}
                     </div>
                 )}
-                <p style={{ marginTop: 12, color: "var(--color-text-muted)", fontSize: "0.8em" }}>
+                <p
+                    style={{
+                        marginTop: 12,
+                        color: "var(--color-text-muted)",
+                        fontSize: "0.8em",
+                    }}
+                >
                     based on confirmed transactions only
                 </p>
             </div>
@@ -117,7 +154,14 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
                     <div style={{ flex: "1 1 300px", minWidth: 0 }}>
                         <BalanceBarChart rows={chartRows} />
                     </div>
-                    <table className="data-table" style={{ flex: "1 1 240px", minWidth: 220, alignSelf: "flex-start" }}>
+                    <table
+                        className="data-table"
+                        style={{
+                            flex: "1 1 240px",
+                            minWidth: 220,
+                            alignSelf: "flex-start",
+                        }}
+                    >
                         <thead>
                             <tr>
                                 <th>person</th>
@@ -132,9 +176,15 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
                                 const isNeg = balance < -0.005;
                                 return (
                                     <tr key={person.id}>
-                                        <td style={{ fontWeight: 700 }}>{person.name}</td>
-                                        <td style={{ textAlign: "right" }}>${paid.toFixed(2)}</td>
-                                        <td style={{ textAlign: "right" }}>${share.toFixed(2)}</td>
+                                        <td style={{ fontWeight: 700 }}>
+                                            {person.name}
+                                        </td>
+                                        <td style={{ textAlign: "right" }}>
+                                            ${paid.toFixed(2)}
+                                        </td>
+                                        <td style={{ textAlign: "right" }}>
+                                            ${share.toFixed(2)}
+                                        </td>
                                         <td style={{ textAlign: "right" }}>
                                             <span
                                                 style={{

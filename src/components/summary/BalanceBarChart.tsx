@@ -36,7 +36,11 @@ export function BalanceBarChart({ rows }: Props): React.JSX.Element {
         <svg
             viewBox={`0 0 ${TOTAL_W} ${totalH}`}
             width="100%"
-            style={{ display: "block", fontFamily: "inherit", maxWidth: TOTAL_W }}
+            style={{
+                display: "block",
+                fontFamily: "inherit",
+                maxWidth: TOTAL_W,
+            }}
             role="img"
             aria-label="Balance bar chart"
         >
@@ -59,16 +63,19 @@ export function BalanceBarChart({ rows }: Props): React.JSX.Element {
                 const barW = Math.round(frac * BAR_HALF);
                 const isPos = row.balance > 0.005;
                 const isNeg = row.balance < -0.005;
-                const color = isPos ? COLOR_POS : isNeg ? COLOR_NEG : COLOR_ZERO;
+                const color = isPos
+                    ? COLOR_POS
+                    : isNeg
+                      ? COLOR_NEG
+                      : COLOR_ZERO;
 
                 const barX = isPos ? zeroX : zeroX - barW;
 
-                const amtText =
-                    isPos
-                        ? `+$${row.balance.toFixed(2)}`
-                        : isNeg
-                          ? `-$${Math.abs(row.balance).toFixed(2)}`
-                          : "$0.00";
+                const amtText = isPos
+                    ? `+$${row.balance.toFixed(2)}`
+                    : isNeg
+                      ? `-$${Math.abs(row.balance).toFixed(2)}`
+                      : "$0.00";
 
                 const labelX = isNeg
                     ? zeroX - barW - LABEL_GAP

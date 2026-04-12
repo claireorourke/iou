@@ -15,7 +15,12 @@ function formatDate(dt: string): string {
     return d.toLocaleDateString();
 }
 
-export function ImportPreview({ transactions, people, onConfirm, onBack }: Props): React.JSX.Element {
+export function ImportPreview({
+    transactions,
+    people,
+    onConfirm,
+    onBack,
+}: Props): React.JSX.Element {
     const valid = transactions.filter((tx) => !isNaN(tx.amount));
     const invalid = transactions.filter((tx) => isNaN(tx.amount));
     const hasPayer = transactions.some((tx) => tx.paidBy !== null);
@@ -26,8 +31,8 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
 
             {invalid.length > 0 && (
                 <p className="error-msg" style={{ marginBottom: 12 }}>
-                    {invalid.length} row{invalid.length !== 1 ? "s" : ""} have unparseable amounts
-                    and will be skipped.
+                    {invalid.length} row{invalid.length !== 1 ? "s" : ""} have
+                    unparseable amounts and will be skipped.
                 </p>
             )}
 
@@ -46,24 +51,57 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
                         <tbody>
                             {transactions.map((tx) => {
                                 const bad = isNaN(tx.amount);
-                                const payer = tx.paidBy !== null
-                                    ? people.find((p) => p.id === tx.paidBy)
-                                    : undefined;
+                                const payer =
+                                    tx.paidBy !== null
+                                        ? people.find((p) => p.id === tx.paidBy)
+                                        : undefined;
                                 return (
-                                    <tr key={tx.id} className={bad ? "preview-row--invalid" : ""}>
+                                    <tr
+                                        key={tx.id}
+                                        className={
+                                            bad ? "preview-row--invalid" : ""
+                                        }
+                                    >
                                         <td>{tx.name || "—"}</td>
                                         <td>{formatDate(tx.datetime)}</td>
-                                        <td>{bad ? "—" : `$${tx.amount.toFixed(2)}`}</td>
+                                        <td>
+                                            {bad
+                                                ? "—"
+                                                : `$${tx.amount.toFixed(2)}`}
+                                        </td>
                                         {hasPayer && (
-                                            <td>{payer?.name ?? <span style={{ color: "var(--color-text-muted)" }}>—</span>}</td>
+                                            <td>
+                                                {payer?.name ?? (
+                                                    <span
+                                                        style={{
+                                                            color: "var(--color-text-muted)",
+                                                        }}
+                                                    >
+                                                        —
+                                                    </span>
+                                                )}
+                                            </td>
                                         )}
                                         <td>
                                             {bad ? (
                                                 "invalid amount"
                                             ) : tx.status === "confirmed" ? (
-                                                <span style={{ color: "var(--color-success)", fontWeight: 600 }}>confirmed</span>
+                                                <span
+                                                    style={{
+                                                        color: "var(--color-success)",
+                                                        fontWeight: 600,
+                                                    }}
+                                                >
+                                                    confirmed
+                                                </span>
                                             ) : (
-                                                <span style={{ color: "var(--color-text-muted)" }}>pending</span>
+                                                <span
+                                                    style={{
+                                                        color: "var(--color-text-muted)",
+                                                    }}
+                                                >
+                                                    pending
+                                                </span>
                                             )}
                                         </td>
                                     </tr>
@@ -83,7 +121,8 @@ export function ImportPreview({ transactions, people, onConfirm, onBack }: Props
                     onClick={onConfirm}
                     disabled={valid.length === 0}
                 >
-                    import {valid.length} transaction{valid.length !== 1 ? "s" : ""}
+                    import {valid.length} transaction
+                    {valid.length !== 1 ? "s" : ""}
                 </button>
                 {valid.length === 0 && (
                     <span className="error-msg">no valid rows to import.</span>

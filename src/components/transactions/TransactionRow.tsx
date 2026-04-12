@@ -6,7 +6,11 @@ interface Props {
     transaction: Transaction;
     people: Person[];
     variant: "featured" | "compact";
-    onUpdate: (id: string, splits: SplitEntry[], paidBy: PersonId | null) => void;
+    onUpdate: (
+        id: string,
+        splits: SplitEntry[],
+        paidBy: PersonId | null,
+    ) => void;
     onConfirm?: (id: string) => void;
     onDelete: (id: string) => void;
     selected?: boolean;
@@ -21,8 +25,10 @@ function formatDate(dt: string): string {
 }
 
 function splitSummary(tx: Transaction, people: Person[]): string {
-    const payer = tx.paidBy !== null ? people.find((p) => p.id === tx.paidBy) : undefined;
-    const payerStr = payer !== undefined ? `Paid by ${payer.name}` : "Payer unset";
+    const payer =
+        tx.paidBy !== null ? people.find((p) => p.id === tx.paidBy) : undefined;
+    const payerStr =
+        payer !== undefined ? `Paid by ${payer.name}` : "Payer unset";
     if (tx.splits.length === 0) return payerStr;
     const mode = tx.splits[0]?.mode ?? "percent";
     const parts = tx.splits
@@ -39,7 +45,8 @@ function splitSummary(tx: Transaction, people: Person[]): string {
 }
 
 function payerString(tx: Transaction, people: Person[]): string {
-    const payer = tx.paidBy !== null ? people.find((p) => p.id === tx.paidBy) : undefined;
+    const payer =
+        tx.paidBy !== null ? people.find((p) => p.id === tx.paidBy) : undefined;
     return payer?.name ?? "unset";
 }
 
@@ -75,12 +82,16 @@ export function TransactionRow({
             <div className="tx-card tx-card--featured">
                 <div className="tx-header">
                     <div className="tx-header__info">
-                        <div className="tx-header__name">{transaction.name || "(unnamed)"}</div>
+                        <div className="tx-header__name">
+                            {transaction.name || "(unnamed)"}
+                        </div>
                         {dateStr !== "" && (
                             <div className="tx-header__meta">{dateStr}</div>
                         )}
                     </div>
-                    <div className="tx-header__amount">${transaction.amount.toFixed(2)}</div>
+                    <div className="tx-header__amount">
+                        ${transaction.amount.toFixed(2)}
+                    </div>
                     <div className="tx-header__actions">
                         {onConfirm !== undefined && (
                             <button
@@ -137,28 +148,39 @@ export function TransactionRow({
                         aria-label={`Select ${transaction.name || "transaction"}`}
                     />
                 )}
-                <span className={`tx-row__name${!transaction.name ? " tx-row__name--unset" : ""}`}>
+                <span
+                    className={`tx-row__name${!transaction.name ? " tx-row__name--unset" : ""}`}
+                >
                     {transaction.name || "unnamed"}
                 </span>
-                <span className="tx-row__amount">${transaction.amount.toFixed(2)}</span>
+                <span className="tx-row__amount">
+                    ${transaction.amount.toFixed(2)}
+                </span>
                 {!editing && (
-                    <span className={`tx-row__payer${transaction.paidBy === null ? " tx-row__payer--unset" : ""}`}>
+                    <span
+                        className={`tx-row__payer${transaction.paidBy === null ? " tx-row__payer--unset" : ""}`}
+                    >
                         {payerString(transaction, people)}
                     </span>
                 )}
-                {dateStr !== "" && <span className="tx-row__date">{dateStr}</span>}
+                {dateStr !== "" && (
+                    <span className="tx-row__date">{dateStr}</span>
+                )}
                 {!editing && splitsString(transaction, people) !== "" && (
-                    <span className="tx-row__splits">{splitsString(transaction, people)}</span>
+                    <span className="tx-row__splits">
+                        {splitsString(transaction, people)}
+                    </span>
                 )}
                 <div className="tx-row__actions">
-                    {transaction.status === "pending" && onConfirm !== undefined && (
-                        <button
-                            className="btn btn-secondary btn-sm"
-                            onClick={() => onConfirm(transaction.id)}
-                        >
-                            confirm
-                        </button>
-                    )}
+                    {transaction.status === "pending" &&
+                        onConfirm !== undefined && (
+                            <button
+                                className="btn btn-secondary btn-sm"
+                                onClick={() => onConfirm(transaction.id)}
+                            >
+                                confirm
+                            </button>
+                        )}
                     <button
                         className="btn btn-ghost btn-sm"
                         onClick={() => setEditing((v) => !v)}

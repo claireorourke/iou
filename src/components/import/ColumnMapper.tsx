@@ -10,7 +10,12 @@ interface Props {
 
 const UNSET = "";
 
-export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Props): React.JSX.Element {
+export function ColumnMapper({
+    session,
+    onMappingChange,
+    onConfirm,
+    onBack,
+}: Props): React.JSX.Element {
     const { headers, rawRows, mapping } = session;
 
     function colVal(col: number | null): string {
@@ -33,12 +38,15 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
         <div className="import-section">
             <h3 className="section-title">map columns</h3>
             <p className="info-msg" style={{ marginBottom: 16 }}>
-                Select which CSV column corresponds to each field. Name and Amount are required.
+                Select which CSV column corresponds to each field. Name and
+                Amount are required.
             </p>
 
             <div className="column-mapper card">
                 <div className="column-mapper__row">
-                    <span className="column-mapper__label">transaction name *</span>
+                    <span className="column-mapper__label">
+                        transaction name *
+                    </span>
                     <select
                         className="column-mapper__select"
                         value={colVal(mapping.nameCol)}
@@ -137,7 +145,9 @@ export function ColumnMapper({ session, onMappingChange, onConfirm, onBack }: Pr
                 <button
                     className="btn btn-primary"
                     onClick={onConfirm}
-                    disabled={mapping.nameCol === null || mapping.amountCol === null}
+                    disabled={
+                        mapping.nameCol === null || mapping.amountCol === null
+                    }
                 >
                     continue →
                 </button>

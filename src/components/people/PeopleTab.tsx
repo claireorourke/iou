@@ -7,7 +7,11 @@ interface Props {
     onRemove: (id: PersonId) => void;
 }
 
-export function PeopleTab({ people, onAdd, onRemove }: Props): React.JSX.Element {
+export function PeopleTab({
+    people,
+    onAdd,
+    onRemove,
+}: Props): React.JSX.Element {
     const [inputValue, setInputValue] = React.useState("");
 
     function handleAdd(): void {
@@ -42,13 +46,17 @@ export function PeopleTab({ people, onAdd, onRemove }: Props): React.JSX.Element
             </div>
             {people.length === 0 ? (
                 <div className="empty-state">
-                    <p>no people added yet. add someone above to get started.</p>
+                    <p>
+                        no people added yet. add someone above to get started.
+                    </p>
                 </div>
             ) : (
                 <div className="people-list">
                     {people.map((person) => (
                         <div key={person.id} className="people-item">
-                            <span className="people-item__name">{person.name}</span>
+                            <span className="people-item__name">
+                                {person.name}
+                            </span>
                             <button
                                 className="btn btn-ghost"
                                 onClick={() => onRemove(person.id)}

@@ -14,12 +14,21 @@ interface Props {
     onAddTransaction: (tx: Transaction) => void;
 }
 
-export function ImportTab({ people, csvSession, onSessionChange, onCommit, onAddTransaction }: Props): React.JSX.Element {
+export function ImportTab({
+    people,
+    csvSession,
+    onSessionChange,
+    onCommit,
+    onAddTransaction,
+}: Props): React.JSX.Element {
     if (people.length === 0) {
         return (
             <div className="card">
                 <div className="empty-state">
-                    <p>add people on the people tab before importing transactions.</p>
+                    <p>
+                        add people on the people tab before importing
+                        transactions.
+                    </p>
                 </div>
             </div>
         );
@@ -48,8 +57,16 @@ export function ImportTab({ people, csvSession, onSessionChange, onCommit, onAdd
                         onSessionChange({ ...csvSession, mapping });
                     }}
                     onConfirm={() => {
-                        const preview = buildPreview(csvSession.rawRows, csvSession.mapping, people);
-                        onSessionChange({ ...csvSession, mappingConfirmed: true, preview });
+                        const preview = buildPreview(
+                            csvSession.rawRows,
+                            csvSession.mapping,
+                            people,
+                        );
+                        onSessionChange({
+                            ...csvSession,
+                            mappingConfirmed: true,
+                            preview,
+                        });
                     }}
                     onBack={() => onSessionChange(null)}
                 />
@@ -63,11 +80,17 @@ export function ImportTab({ people, csvSession, onSessionChange, onCommit, onAdd
                 transactions={csvSession.preview}
                 people={people}
                 onConfirm={() => {
-                    const valid = csvSession.preview.filter((tx) => !isNaN(tx.amount));
+                    const valid = csvSession.preview.filter(
+                        (tx) => !isNaN(tx.amount),
+                    );
                     onCommit(valid);
                 }}
                 onBack={() => {
-                    onSessionChange({ ...csvSession, mappingConfirmed: false, preview: [] });
+                    onSessionChange({
+                        ...csvSession,
+                        mappingConfirmed: false,
+                        preview: [],
+                    });
                 }}
             />
         </div>

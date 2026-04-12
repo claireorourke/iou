@@ -19,11 +19,13 @@ No test runner is configured. Formatting uses Prettier with `tabWidth: 4`.
 IOU is a client-side-only React 19 + TypeScript app built with Vite. There is no backend, database, or authentication. State is persisted to `localStorage` (key `"iou-state"`) and rehydrated on load via `validateAppState`.
 
 **State model** (`src/types.ts`):
+
 - `AppState` holds two arrays: `people: Person[]` and `transactions: Transaction[]`.
 - Each `Transaction` has a `splits` array of `SplitEntry` (each referencing a `personId` with either a `percent` or `amount` share) and a `status` of `"pending" | "confirmed"`.
 - `CsvImportSession` is ephemeral import state (raw rows, column mapping, preview transactions) held separately from `AppState`.
 
 **App shell** (`src/App.tsx`):
+
 - Single `useState<AppState>` owns all persisted data. Mutation functions (`addPerson`, `removePerson`, `updateTransaction`, `deleteTransaction`, `confirmTransaction`, `deleteTransactions`, `commitImport`, `importState`) live here and are passed down as props.
 - A second `useState<CsvImportSession | null>` tracks in-progress CSV imports.
 - Tab routing is a simple `useState<Tab>` string — no router library.
