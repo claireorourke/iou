@@ -414,7 +414,9 @@ select:focus {
     align-items: end;
 }
 
-.add-tx-form__name {
+.add-tx-form__name,
+.add-tx-form__amount,
+.add-tx-form__date {
     grid-column: 1 / -1;
 }
 
@@ -432,6 +434,8 @@ select:focus {
 }
 
 .add-tx-form__name input,
+.add-tx-form__amount input,
+.add-tx-form__date input,
 .add-tx-form input {
     width: 100%;
     box-sizing: border-box;

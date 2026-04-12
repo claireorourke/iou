@@ -83,21 +83,25 @@ export function AddTransactionForm({
                         onKeyDown={handleKeyDown}
                     />
                 </div>
-                <input
-                    type="number"
-                    placeholder="amount"
-                    min={0}
-                    step={0.01}
-                    value={amount}
-                    onChange={(e) => setAmount(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
-                <input
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                />
+                <div className="add-tx-form__amount">
+                    <input
+                        type="number"
+                        placeholder="amount"
+                        min={0}
+                        step={0.01}
+                        value={amount}
+                        onChange={(e) => setAmount(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
+                <div className="add-tx-form__date">
+                    <input
+                        type="date"
+                        value={date}
+                        onChange={(e) => setDate(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                    />
+                </div>
                 <div className="add-tx-form__actions">
                     <button
                         className="btn btn-primary"
