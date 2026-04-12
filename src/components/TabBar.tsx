@@ -9,7 +9,7 @@ interface Props {
 
 const TABS: { id: Tab; label: string }[] = [
     { id: "people", label: "people" },
-    { id: "import", label: "import csv" },
+    { id: "import", label: "add" },
     { id: "transactions", label: "transactions" },
     { id: "summary", label: "summary" },
     { id: "saveload", label: "save / load" },

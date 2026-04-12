@@ -69,8 +69,13 @@ export function TransactionsTab({
 
     const pending = transactions.filter((tx) => tx.status === "pending");
     const confirmed = transactions.filter((tx) => tx.status === "confirmed");
-    const featuredTx = pending[0] ?? null;
-    const remainingPending = pending.slice(1);
+    const sortedPending = [...pending].sort((a, b) => {
+        if (a.datetime === "") return 1;
+        if (b.datetime === "") return -1;
+        return new Date(a.datetime).getTime() - new Date(b.datetime).getTime();
+    });
+    const featuredTx = sortedPending[0] ?? null;
+    const remainingPending = pending.filter((tx) => tx.id !== featuredTx?.id);
 
     const pendingGroups = groupByMonth(remainingPending);
     const confirmedGroups = groupByMonth(confirmed);

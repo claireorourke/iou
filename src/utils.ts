@@ -1,5 +1,11 @@
 import type { AppState, CsvMapping, Person, PersonId, SplitEntry, Transaction, TransactionStatus } from "./types.js";
 
+export interface Settlement {
+    fromId: PersonId;
+    toId: PersonId;
+    amount: number;
+}
+
 export function newId(): string {
     return crypto.randomUUID();
 }
@@ -144,6 +150,41 @@ export function computeBalances(state: AppState): Map<PersonId, number> {
         }
     }
     return balances;
+}
+
+export function computeSettlements(balances: Map<PersonId, number>): Settlement[] {
+    const credits: Array<{ id: PersonId; amount: number }> = [];
+    const debts: Array<{ id: PersonId; amount: number }> = [];
+
+    for (const [id, balance] of balances) {
+        if (balance > 0.005) credits.push({ id, amount: balance });
+        else if (balance < -0.005) debts.push({ id, amount: -balance });
+    }
+
+    credits.sort((a, b) => b.amount - a.amount);
+    debts.sort((a, b) => b.amount - a.amount);
+
+    const settlements: Settlement[] = [];
+    let ci = 0;
+    let di = 0;
+
+    while (ci < credits.length && di < debts.length) {
+        const credit = credits[ci]!;
+        const debt = debts[di]!;
+        const amount = Math.round(Math.min(credit.amount, debt.amount) * 100) / 100;
+
+        if (amount >= 0.01) {
+            settlements.push({ fromId: debt.id, toId: credit.id, amount });
+        }
+
+        credit.amount -= amount;
+        debt.amount -= amount;
+
+        if (credit.amount < 0.005) ci++;
+        if (debt.amount < 0.005) di++;
+    }
+
+    return settlements;
 }
 
 export function validateAppState(parsed: unknown): AppState {

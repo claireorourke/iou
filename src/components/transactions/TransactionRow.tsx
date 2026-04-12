@@ -38,6 +38,25 @@ function splitSummary(tx: Transaction, people: Person[]): string {
     return `${payerStr} · ${parts}`;
 }
 
+function payerString(tx: Transaction, people: Person[]): string {
+    const payer = tx.paidBy !== null ? people.find((p) => p.id === tx.paidBy) : undefined;
+    return payer?.name ?? "unset";
+}
+
+function splitsString(tx: Transaction, people: Person[]): string {
+    if (tx.splits.length === 0) return "";
+    const mode = tx.splits[0]?.mode ?? "percent";
+    return tx.splits
+        .map((s) => {
+            const person = people.find((p) => p.id === s.personId);
+            const name = person?.name ?? "?";
+            return mode === "percent"
+                ? `${name} ${s.value.toFixed(0)}%`
+                : `${name} $${s.value.toFixed(2)}`;
+        })
+        .join(" · ");
+}
+
 export function TransactionRow({
     transaction,
     people,
@@ -118,11 +137,18 @@ export function TransactionRow({
                         aria-label={`Select ${transaction.name || "transaction"}`}
                     />
                 )}
-                <span className="tx-row__name">{transaction.name || "(unnamed)"}</span>
-                {dateStr !== "" && <span className="tx-row__date">{dateStr}</span>}
+                <span className={`tx-row__name${!transaction.name ? " tx-row__name--unset" : ""}`}>
+                    {transaction.name || "unnamed"}
+                </span>
                 <span className="tx-row__amount">${transaction.amount.toFixed(2)}</span>
                 {!editing && (
-                    <span className="tx-row__splits">{splitSummary(transaction, people)}</span>
+                    <span className={`tx-row__payer${transaction.paidBy === null ? " tx-row__payer--unset" : ""}`}>
+                        {payerString(transaction, people)}
+                    </span>
+                )}
+                {dateStr !== "" && <span className="tx-row__date">{dateStr}</span>}
+                {!editing && splitsString(transaction, people) !== "" && (
+                    <span className="tx-row__splits">{splitsString(transaction, people)}</span>
                 )}
                 <div className="tx-row__actions">
                     {transaction.status === "pending" && onConfirm !== undefined && (

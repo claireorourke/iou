@@ -1,25 +1,11 @@
 import React from "react";
 import type { AppState } from "../../types.js";
-import { computeBalances } from "../../utils.js";
-import { SpendingPieChart } from "./SpendingPieChart.js";
-import type { PieSlice } from "./SpendingPieChart.js";
+import { computeBalances, computeSettlements } from "../../utils.js";
+import { BalanceBarChart } from "./BalanceBarChart.js";
 
 interface Props {
     state: AppState;
 }
-
-const PIE_COLORS = [
-    "#2563eb",
-    "#16a34a",
-    "#dc2626",
-    "#d97706",
-    "#7c3aed",
-    "#0891b2",
-    "#be185d",
-    "#65a30d",
-    "#c2410c",
-    "#1d4ed8",
-];
 
 export function SummaryTab({ state }: Props): React.JSX.Element {
     if (state.people.length === 0) {
@@ -38,59 +24,139 @@ export function SummaryTab({ state }: Props): React.JSX.Element {
     };
 
     const balances = computeBalances(confirmedState);
+    const settlements = computeSettlements(balances);
+
+    const nameById = new Map(state.people.map((p) => [p.id, p.name]));
+
+    // Per-person paid and share totals
+    const totalPaid = new Map<string, number>(state.people.map((p) => [p.id, 0]));
+    const totalShare = new Map<string, number>(state.people.map((p) => [p.id, 0]));
+    for (const tx of confirmedState.transactions) {
+        if (tx.paidBy !== null) {
+            totalPaid.set(tx.paidBy, (totalPaid.get(tx.paidBy) ?? 0) + tx.amount);
+        }
+        for (const split of tx.splits) {
+            const share =
+                split.mode === "percent" ? (split.value / 100) * tx.amount : split.value;
+            totalShare.set(split.personId, (totalShare.get(split.personId) ?? 0) + share);
+        }
+    }
+
     const rows = state.people
-        .map((p) => ({ person: p, balance: balances.get(p.id) ?? 0 }))
+        .map((p) => ({
+            person: p,
+            balance: balances.get(p.id) ?? 0,
+            paid: totalPaid.get(p.id) ?? 0,
+            share: totalShare.get(p.id) ?? 0,
+        }))
         .sort((a, b) => b.balance - a.balance);
 
-    const slices: PieSlice[] = rows
-        .filter((r) => r.balance > 0)
-        .map((r, i) => ({
-            personId: r.person.id,
-            name: r.person.name,
-            amount: r.balance,
-            color: PIE_COLORS[i % PIE_COLORS.length]!,
-        }));
+    const chartRows = rows.map((r) => ({
+        personId: r.person.id,
+        name: r.person.name,
+        balance: r.balance,
+    }));
 
     return (
-        <div className="card">
-            <h2 className="section-title">balance summary (confirmed)</h2>
-            <div className="summary-layout">
-                <SpendingPieChart slices={slices} />
-                <table className="data-table" style={{ flex: 1, minWidth: 240 }}>
-                    <thead>
-                        <tr>
-                            <th>person</th>
-                            <th style={{ textAlign: "right" }}>net balance</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {rows.map(({ person, balance }) => (
-                            <tr key={person.id}>
-                                <td>{person.name}</td>
-                                <td style={{ textAlign: "right" }}>
-                                    <span
-                                        className="balance-amount"
-                                        style={{
-                                            color:
-                                                balance > 0.005
-                                                    ? "var(--color-success)"
-                                                    : balance < -0.005
-                                                      ? "var(--color-danger)"
-                                                      : undefined,
-                                        }}
-                                    >
-                                        {balance >= 0 ? "+" : ""}
-                                        {balance.toFixed(2)}
-                                    </span>
-                                </td>
-                            </tr>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {/* Settlements */}
+            <div className="card">
+                <h2 className="section-title">to settle up</h2>
+                {settlements.length === 0 ? (
+                    <p style={{ color: "var(--color-success)", fontWeight: 800, fontSize: 15 }}>
+                        all settled up!
+                    </p>
+                ) : (
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                        {settlements.map((s, i) => (
+                            <div
+                                key={i}
+                                style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    gap: 12,
+                                    padding: "10px 14px",
+                                    background: "var(--color-bg)",
+                                    border: "2px solid #000",
+                                    boxShadow: "3px 3px 0 #000",
+                                }}
+                            >
+                                <span style={{ fontWeight: 800, fontSize: 15 }}>
+                                    {nameById.get(s.fromId) ?? s.fromId}
+                                </span>
+                                <span style={{ color: "var(--color-text-muted)", fontSize: 13 }}>
+                                    owes
+                                </span>
+                                <span style={{ fontWeight: 800, fontSize: 15 }}>
+                                    {nameById.get(s.toId) ?? s.toId}
+                                </span>
+                                <span
+                                    style={{
+                                        marginLeft: "auto",
+                                        fontWeight: 900,
+                                        fontSize: 17,
+                                        color: "var(--color-danger)",
+                                        flexShrink: 0,
+                                    }}
+                                >
+                                    ${s.amount.toFixed(2)}
+                                </span>
+                            </div>
                         ))}
-                    </tbody>
-                </table>
+                    </div>
+                )}
+                <p style={{ marginTop: 12, color: "var(--color-text-muted)", fontSize: "0.8em" }}>
+                    based on confirmed transactions only
+                </p>
             </div>
-            <p style={{ marginTop: 12, color: "var(--color-text-muted)", fontSize: "0.85em" }}>
-                Positive = owed to you · Negative = you owe
-            </p>
+
+            {/* Balance chart + table */}
+            <div className="card">
+                <h2 className="section-title">net balances</h2>
+                <div className="summary-layout">
+                    <div style={{ flex: "1 1 300px", minWidth: 0 }}>
+                        <BalanceBarChart rows={chartRows} />
+                    </div>
+                    <table className="data-table" style={{ flex: "1 1 240px", minWidth: 220, alignSelf: "flex-start" }}>
+                        <thead>
+                            <tr>
+                                <th>person</th>
+                                <th style={{ textAlign: "right" }}>paid</th>
+                                <th style={{ textAlign: "right" }}>share</th>
+                                <th style={{ textAlign: "right" }}>net</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {rows.map(({ person, balance, paid, share }) => {
+                                const isPos = balance > 0.005;
+                                const isNeg = balance < -0.005;
+                                return (
+                                    <tr key={person.id}>
+                                        <td style={{ fontWeight: 700 }}>{person.name}</td>
+                                        <td style={{ textAlign: "right" }}>${paid.toFixed(2)}</td>
+                                        <td style={{ textAlign: "right" }}>${share.toFixed(2)}</td>
+                                        <td style={{ textAlign: "right" }}>
+                                            <span
+                                                style={{
+                                                    fontWeight: 800,
+                                                    color: isPos
+                                                        ? "var(--color-success)"
+                                                        : isNeg
+                                                          ? "var(--color-danger)"
+                                                          : undefined,
+                                                }}
+                                            >
+                                                {isPos ? "+" : ""}
+                                                {balance.toFixed(2)}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                );
+                            })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     );
 }

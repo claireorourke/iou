@@ -30,7 +30,7 @@
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-family: "Space Grotesk", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     font-size: 14px;
     color: var(--color-text);
     background-color: var(--color-bg);
@@ -87,6 +87,7 @@ body {
     padding: 0 24px;
     height: 54px;
     display: flex;
+    flex-direction: row;
     align-items: center;
     border-bottom: 3px solid #000;
     box-shadow: 0 3px 0 #000;
@@ -98,6 +99,37 @@ body {
     font-size: 22px;
     font-weight: 900;
     letter-spacing: 0.1em;
+    line-height: 1;
+}
+
+.app-footer {
+    background: var(--color-primary);
+    border-top: var(--border);
+    padding: 12px 24px;
+    text-align: center;
+}
+
+.app-footer-quote {
+    font-size: 12px;
+    font-style: italic;
+    text-transform: lowercase;
+    color: rgba(255, 255, 255, 0.72);
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+.app-footer-quote__attr {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.app-footer-quote:hover,
+.app-footer-quote:hover .app-footer-quote__attr {
+    color: #fff;
+    text-decoration: underline;
 }
 
 .app-content {
@@ -106,6 +138,9 @@ body {
     max-width: 900px;
     width: 100%;
     margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 /* Tab bar */
@@ -143,6 +178,7 @@ body {
 /* Common form elements */
 input[type="text"],
 input[type="number"],
+input[type="date"],
 select {
     border: 2px solid #000;
     border-radius: var(--radius);
@@ -156,6 +192,7 @@ select {
 
 input[type="text"]:focus,
 input[type="number"]:focus,
+input[type="date"]:focus,
 select:focus {
     border-color: var(--color-border-focus);
     box-shadow: 3px 3px 0 var(--color-primary);
@@ -328,6 +365,25 @@ select:focus {
 
 .people-item__name {
     font-weight: 700;
+}
+
+/* Add transaction form */
+.add-tx-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    align-items: end;
+}
+
+.add-tx-form__name {
+    grid-column: 1 / -1;
+}
+
+.add-tx-form__name input,
+.add-tx-form input,
+.add-tx-form select {
+    width: 100%;
+    box-sizing: border-box;
 }
 
 /* Import tab */
@@ -709,6 +765,10 @@ select:focus {
 }
 
 /* ── Compact transaction row ──────────────────────────────────── */
+/* Flexbox with flex-basis: auto on all items so scaled shrink factors are
+   non-zero. High flex-shrink multipliers on secondary fields ensure they
+   truncate well before name does. Priority: amount (never) → name → payer
+   → date → splits (first). */
 
 .tx-row {
     display: flex;
@@ -727,36 +787,64 @@ select:focus {
     border-radius: 0;
 }
 
+.tx-row > input[type="checkbox"] {
+    flex: 0 0 16px;
+    width: 16px;
+    height: 16px;
+}
+
 .tx-row__name {
-    flex: 1;
-    font-weight: 600;
+    flex: 1 1 auto;
+    font-weight: 800;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     min-width: 0;
 }
 
-.tx-row__date {
-    font-size: 12px;
-    color: var(--color-text-muted);
-    white-space: nowrap;
-    width: 80px;
-    flex-shrink: 0;
+.tx-row__name--unset {
+    font-style: italic;
+    opacity: 0.4;
 }
 
 .tx-row__amount {
+    flex: 0 0 auto;
     font-weight: 800;
     white-space: nowrap;
-    flex-shrink: 0;
-    width: 70px;
     text-align: right;
     color: var(--color-primary);
 }
 
-.tx-row__splits {
+.tx-row__payer {
+    flex: 0 3 auto;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.tx-row__payer--unset {
+    font-style: italic;
+    opacity: 0.5;
+}
+
+.tx-row__date {
+    flex: 0 2 auto;
     font-size: 12px;
     color: var(--color-text-muted);
-    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
+
+.tx-row__splits {
+    flex: 0 1 auto;
+    font-size: 12px;
+    color: var(--color-text-muted);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -764,9 +852,9 @@ select:focus {
 }
 
 .tx-row__actions {
+    flex: 0 0 auto;
     display: flex;
     gap: 4px;
-    flex-shrink: 0;
 }
 
 /* ── Featured card modifier ───────────────────────────────────── */
@@ -832,5 +920,31 @@ select:focus {
     height: 14px;
     border: 2px solid #000;
     flex-shrink: 0;
+}
+
+/* ── Scroll to top ────────────────────────────────────────────── */
+
+.scroll-to-top {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 40px;
+    height: 40px;
+    background: var(--color-yellow);
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0 #000;
+    font-size: 18px;
+    font-weight: 900;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.08s, box-shadow 0.08s;
+    z-index: 100;
+}
+
+.scroll-to-top:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 #000;
 }
 

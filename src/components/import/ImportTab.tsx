@@ -4,15 +4,17 @@ import { buildPreview } from "../../utils.js";
 import { CsvUploader } from "./CsvUploader.js";
 import { ColumnMapper } from "./ColumnMapper.js";
 import { ImportPreview } from "./ImportPreview.js";
+import { AddTransactionForm } from "./AddTransactionForm.js";
 
 interface Props {
     people: Person[];
     csvSession: CsvImportSession | null;
     onSessionChange: (session: CsvImportSession | null) => void;
     onCommit: (transactions: Transaction[]) => void;
+    onAddTransaction: (tx: Transaction) => void;
 }
 
-export function ImportTab({ people, csvSession, onSessionChange, onCommit }: Props): React.JSX.Element {
+export function ImportTab({ people, csvSession, onSessionChange, onCommit, onAddTransaction }: Props): React.JSX.Element {
     if (people.length === 0) {
         return (
             <div className="card">
@@ -25,12 +27,15 @@ export function ImportTab({ people, csvSession, onSessionChange, onCommit }: Pro
 
     if (csvSession === null) {
         return (
-            <div className="card">
-                <h2 className="section-title">import csv</h2>
-                <CsvUploader
-                    onParsed={(session) => onSessionChange(session)}
-                />
-            </div>
+            <>
+                <div className="card">
+                    <h2 className="section-title">import csv</h2>
+                    <CsvUploader
+                        onParsed={(session) => onSessionChange(session)}
+                    />
+                </div>
+                <AddTransactionForm people={people} onAdd={onAddTransaction} />
+            </>
         );
     }
 

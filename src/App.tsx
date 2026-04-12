@@ -7,6 +7,8 @@ import { ImportTab } from "./components/import/ImportTab.js";
 import { TransactionsTab } from "./components/transactions/TransactionsTab.js";
 import { SummaryTab } from "./components/summary/SummaryTab.js";
 import { SaveLoadTab } from "./components/saveload/SaveLoadTab.js";
+import { ScrollToTop } from "./components/ScrollToTop.js";
+import { quotes } from "./quotes.js";
 import "./styles/global.css";
 
 type Tab = "people" | "import" | "transactions" | "summary" | "saveload";
@@ -26,6 +28,14 @@ function loadPersistedState(): AppState {
 
 export function App(): React.JSX.Element {
     const [state, setState] = React.useState<AppState>(loadPersistedState);
+    const quote = React.useMemo(() => {
+        const stored = localStorage.getItem("iou-quote-index");
+        const next = stored === null
+            ? Math.floor(Math.random() * quotes.length)
+            : (parseInt(stored, 10) + 1) % quotes.length;
+        localStorage.setItem("iou-quote-index", String(next));
+        return quotes[next];
+    }, []);
 
     React.useEffect(() => {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
@@ -47,6 +57,13 @@ export function App(): React.JSX.Element {
                 ...tx,
                 splits: tx.splits.filter((s) => s.personId !== id),
             })),
+        }));
+    }
+
+    function addTransaction(tx: Transaction): void {
+        setState((prev) => ({
+            ...prev,
+            transactions: [...prev.transactions, tx],
         }));
     }
 
@@ -115,6 +132,7 @@ export function App(): React.JSX.Element {
                         csvSession={csvSession}
                         onSessionChange={setCsvSession}
                         onCommit={commitImport}
+                        onAddTransaction={addTransaction}
                     />
                 )}
                 {activeTab === "transactions" && (
@@ -132,6 +150,13 @@ export function App(): React.JSX.Element {
                     <SaveLoadTab state={state} onLoad={importState} />
                 )}
             </main>
+            <ScrollToTop />
+            <footer className="app-footer">
+                <a className="app-footer-quote" href={quote.url} target="_blank" rel="noopener noreferrer">
+                    <span>"{quote.quote}"</span>
+                    <span className="app-footer-quote__attr">— {quote.character}, <em>{quote.source}</em></span>
+                </a>
+            </footer>
         </div>
     );
 }
