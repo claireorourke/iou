@@ -156,6 +156,16 @@ export function App(): React.JSX.Element {
                     <span>"{quote.quote}"</span>
                     <span className="app-footer-quote__attr">— {quote.character}, <em>{quote.source}</em></span>
                 </a>
+                <a
+                    className="github-link"
+                    href="https://github.com/claireorourke/iou"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="view source on github"
+                    title="view source on github"
+                >
+                    <img src="github-mark-white.svg" alt="" width="16" height="16" />
+                </a>
             </footer>
         </div>
     );

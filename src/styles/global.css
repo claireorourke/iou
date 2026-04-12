@@ -76,7 +76,7 @@ body {
 }
 
 .app {
-    min-height: 100vh;
+    min-height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -110,7 +110,9 @@ body {
     background: var(--color-primary);
     border-top: var(--border);
     padding: 12px 24px;
-    text-align: center;
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
 }
 
 .app-footer-quote {
@@ -123,6 +125,8 @@ body {
     flex-direction: column;
     align-items: center;
     gap: 2px;
+    flex: 1;
+    text-align: center;
 }
 
 .app-footer-quote__attr {
@@ -947,6 +951,18 @@ select:focus {
 }
 
 /* ── Scroll to top ────────────────────────────────────────────── */
+
+.github-link {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    opacity: 0.6;
+    transition: opacity 0.1s;
+}
+
+.github-link:hover {
+    opacity: 1;
+}
 
 .scroll-to-top {
     position: fixed;
