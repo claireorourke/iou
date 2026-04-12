@@ -50,6 +50,30 @@ export function AddTransactionForm({
         <div className="card">
             <h2 className="section-title">add transaction</h2>
             <div className="add-tx-form">
+                <div className="add-tx-form__paidby">
+                    <span className="payer-label">paid by</span>
+                    <div
+                        className="payer-pills"
+                        role="group"
+                        aria-label="paid by"
+                    >
+                        {people.map((p) => (
+                            <button
+                                key={p.id}
+                                className={`payer-pill${paidBy === p.id ? " payer-pill--active" : ""}`}
+                                onClick={() => setPaidBy(p.id)}
+                            >
+                                {p.name}
+                            </button>
+                        ))}
+                        <button
+                            className={`payer-pill${paidBy === "" ? " payer-pill--active" : ""}`}
+                            onClick={() => setPaidBy("")}
+                        >
+                            unset
+                        </button>
+                    </div>
+                </div>
                 <div className="add-tx-form__name">
                     <input
                         type="text"
@@ -74,24 +98,15 @@ export function AddTransactionForm({
                     onChange={(e) => setDate(e.target.value)}
                     onKeyDown={handleKeyDown}
                 />
-                <select
-                    value={paidBy}
-                    onChange={(e) => setPaidBy(e.target.value)}
-                >
-                    <option value="">paid by — unset</option>
-                    {people.map((p) => (
-                        <option key={p.id} value={p.id}>
-                            {p.name}
-                        </option>
-                    ))}
-                </select>
-                <button
-                    className="btn btn-primary"
-                    onClick={handleSubmit}
-                    disabled={!isValid}
-                >
-                    add
-                </button>
+                <div className="add-tx-form__actions">
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleSubmit}
+                        disabled={!isValid}
+                    >
+                        add
+                    </button>
+                </div>
             </div>
         </div>
     );

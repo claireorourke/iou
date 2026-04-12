@@ -17,7 +17,7 @@ import { ScrollToTop } from "./components/ScrollToTop.js";
 import { quotes } from "./quotes.js";
 import "./styles/global.css";
 
-type Tab = "people" | "import" | "transactions" | "summary" | "saveload";
+type Tab = "people" | "import" | "split" | "summary" | "saveload";
 
 const EMPTY_STATE: AppState = { people: [], transactions: [] };
 const STORAGE_KEY = "iou-state";
@@ -82,7 +82,7 @@ export function App(): React.JSX.Element {
             transactions: [...prev.transactions, ...transactions],
         }));
         setCsvSession(null);
-        setActiveTab("transactions");
+        setActiveTab("split");
     }
 
     function updateTransaction(
@@ -148,7 +148,7 @@ export function App(): React.JSX.Element {
                         onAddTransaction={addTransaction}
                     />
                 )}
-                {activeTab === "transactions" && (
+                {activeTab === "split" && (
                     <TransactionsTab
                         transactions={state.transactions}
                         people={state.people}
@@ -176,13 +176,13 @@ export function App(): React.JSX.Element {
                     <div className="tab-next-row">
                         <button
                             className="btn btn-primary"
-                            onClick={() => setActiveTab("transactions")}
+                            onClick={() => setActiveTab("split")}
                         >
-                            next: transactions →
+                            next: split →
                         </button>
                     </div>
                 )}
-                {activeTab === "transactions" && (
+                {activeTab === "split" && (
                     <div className="tab-next-row">
                         <button
                             className="btn btn-primary"

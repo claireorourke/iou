@@ -418,9 +418,21 @@ select:focus {
     grid-column: 1 / -1;
 }
 
+.add-tx-form__paidby {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.add-tx-form__actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-end;
+}
+
 .add-tx-form__name input,
-.add-tx-form input,
-.add-tx-form select {
+.add-tx-form input {
     width: 100%;
     box-sizing: border-box;
 }
@@ -675,26 +687,40 @@ select:focus {
 
 .split-editor__payer {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 10px;
     margin-bottom: 14px;
 }
 
-.split-editor__payer-label {
+.payer-label {
     font-weight: 700;
     font-size: 13px;
     flex-shrink: 0;
+    padding-top: 5px;
 }
 
-.split-editor__payer-select {
-    flex: 1;
-    max-width: 220px;
-    padding: 5px 8px;
+.payer-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.payer-pill {
+    padding: 4px 12px;
     border: 2px solid #000;
-    border-radius: 0;
+    border-radius: 999px;
     background: var(--color-surface);
     color: var(--color-text);
-    font-size: 14px;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    line-height: 1.4;
+}
+
+.payer-pill--active {
+    background: var(--color-primary);
+    border-color: #000;
+    color: #fff;
 }
 
 .split-editor__footer {

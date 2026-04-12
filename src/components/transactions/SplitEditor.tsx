@@ -122,21 +122,24 @@ export function SplitEditor({
     return (
         <div className="split-editor">
             <div className="split-editor__payer">
-                <label className="split-editor__payer-label">paid by</label>
-                <select
-                    className="split-editor__payer-select"
-                    value={paidBy ?? ""}
-                    onChange={(e) =>
-                        setPaidBy(e.target.value === "" ? null : e.target.value)
-                    }
-                >
-                    <option value="">— unset —</option>
+                <span className="payer-label">paid by</span>
+                <div className="payer-pills" role="group" aria-label="paid by">
+                    <button
+                        className={`payer-pill${paidBy === null ? " payer-pill--active" : ""}`}
+                        onClick={() => setPaidBy(null)}
+                    >
+                        unset
+                    </button>
                     {people.map((p) => (
-                        <option key={p.id} value={p.id}>
+                        <button
+                            key={p.id}
+                            className={`payer-pill${paidBy === p.id ? " payer-pill--active" : ""}`}
+                            onClick={() => setPaidBy(p.id)}
+                        >
                             {p.name}
-                        </option>
+                        </button>
                     ))}
-                </select>
+                </div>
             </div>
 
             <div className="split-editor__toolbar">

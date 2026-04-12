@@ -1,6 +1,6 @@
 import React from "react";
 
-type Tab = "people" | "import" | "transactions" | "summary" | "saveload";
+type Tab = "people" | "import" | "split" | "summary" | "saveload";
 
 interface Props {
     activeTab: Tab;
@@ -10,7 +10,7 @@ interface Props {
 const TABS: { id: Tab; label: string }[] = [
     { id: "people", label: "people" },
     { id: "import", label: "add" },
-    { id: "transactions", label: "transactions" },
+    { id: "split", label: "split" },
     { id: "summary", label: "summary" },
     { id: "saveload", label: "save / load" },
 ];
