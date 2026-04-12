@@ -84,11 +84,14 @@ body {
 .app-header {
     background: var(--color-primary);
     color: #fff;
-    padding: 0 24px;
-    height: 54px;
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: 0;
+    padding-left: max(24px, env(safe-area-inset-left));
+    padding-right: max(24px, env(safe-area-inset-right));
+    min-height: calc(54px + env(safe-area-inset-top));
     display: flex;
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
     border-bottom: 3px solid #000;
     box-shadow: 0 3px 0 #000;
     position: relative;
@@ -100,6 +103,7 @@ body {
     font-weight: 900;
     letter-spacing: 0.1em;
     line-height: 1;
+    padding-bottom: 14px;
 }
 
 .app-footer {
@@ -150,6 +154,13 @@ body {
     display: flex;
     padding: 0 24px;
     gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.tab-bar::-webkit-scrollbar {
+    display: none;
 }
 
 .tab-bar button {
@@ -164,6 +175,19 @@ body {
     margin-bottom: -3px;
     letter-spacing: 0.02em;
     transition: color 0.1s, border-color 0.1s;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+    .tab-bar {
+        padding: 0 max(0px, env(safe-area-inset-left));
+    }
+
+    .tab-bar button {
+        padding: 12px 12px;
+        font-size: 12px;
+    }
 }
 
 .tab-bar button:hover {
