@@ -1,0 +1,25 @@
+{
+    "name": "iou",
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "tsc": "tsc -b",
+        "dev": "vite",
+        "build": "vite build",
+        "preview": "vite preview"
+    },
+    "devDependencies": {
+        "@types/react": "^19.2.14",
+        "@vitejs/plugin-react": "^6.0.1",
+        "prettier": "^3.8.2",
+        "typescript": "^6.0.2",
+        "vite": "^8.0.8"
+    },
+    "dependencies": {
+        "react": "^19.2.5",
+        "react-dom": "^19.2.5"
+    },
+    "prettier": {
+        "tabWidth": 4
+    }
+}
