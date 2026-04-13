@@ -70,10 +70,16 @@ export function App(): React.JSX.Element {
     );
 
     function addPerson(name: string): void {
-        setState((prev) => ({
-            ...prev,
-            people: [...prev.people, { id: newId(), name: name.trim() }],
-        }));
+        const trimmed = name.trim();
+        setState((prev) => {
+            const lower = trimmed.toLowerCase();
+            if (prev.people.some((p) => p.name.toLowerCase() === lower))
+                return prev;
+            return {
+                ...prev,
+                people: [...prev.people, { id: newId(), name: trimmed }],
+            };
+        });
     }
 
     function removePerson(id: string): void {

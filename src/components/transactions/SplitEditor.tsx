@@ -221,8 +221,8 @@ export function SplitEditor({
                 className={`split-editor__remaining ${remainingOk ? "split-editor__remaining--ok" : "split-editor__remaining--warn"}`}
             >
                 {mode === "percent"
-                    ? `Remaining: ${remaining.toFixed(2)}%`
-                    : `Remaining: $${remaining.toFixed(2)}`}
+                    ? `remaining: ${remaining.toFixed(2)}%`
+                    : `remaining: $${remaining.toFixed(2)}`}
             </div>
 
             {error !== null && (

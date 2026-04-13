@@ -16,7 +16,7 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
             complete(results) {
                 const allRows = results.data;
                 if (allRows.length === 0) {
-                    setError("The CSV file is empty.");
+                    setError("the csv file is empty.");
                     return;
                 }
                 const firstRow = allRows[0] ?? [];
@@ -32,7 +32,7 @@ export function CsvUploader({ onParsed }: Props): React.JSX.Element {
                     headers = firstRow;
                     rawRows = allRows.slice(1);
                 } else {
-                    headers = firstRow.map((_, i) => `Column ${i + 1}`);
+                    headers = firstRow.map((_, i) => `column ${i + 1}`);
                     rawRows = allRows;
                 }
                 onParsed({

@@ -38,8 +38,8 @@ export function ColumnMapper({
         <div className="import-section">
             <h3 className="section-title">map columns</h3>
             <p className="info-msg" style={{ marginBottom: 16 }}>
-                Select which CSV column corresponds to each field. Name and
-                Amount are required.
+                select which csv column corresponds to each field. name and
+                amount are required.
             </p>
 
             <div className="column-mapper card">
@@ -55,7 +55,7 @@ export function ColumnMapper({
                         <option value={UNSET}>— not mapped —</option>
                         {headers.map((h, i) => (
                             <option key={i} value={i}>
-                                {h || `Column ${i + 1}`}
+                                {h || `column ${i + 1}`}
                             </option>
                         ))}
                     </select>
@@ -70,7 +70,7 @@ export function ColumnMapper({
                         <option value={UNSET}>— not mapped —</option>
                         {headers.map((h, i) => (
                             <option key={i} value={i}>
-                                {h || `Column ${i + 1}`}
+                                {h || `column ${i + 1}`}
                             </option>
                         ))}
                     </select>
@@ -85,16 +85,16 @@ export function ColumnMapper({
                         <option value={UNSET}>— not mapped —</option>
                         {headers.map((h, i) => (
                             <option key={i} value={i}>
-                                {h || `Column ${i + 1}`}
+                                {h || `column ${i + 1}`}
                             </option>
                         ))}
                     </select>
                 </div>
                 <div className="column-mapper__row">
                     <span className="column-mapper__label">
-                        Paid by
+                        paid by
                         <span className="column-mapper__hint">
-                            Matched rows import as confirmed
+                            matched rows import as confirmed
                         </span>
                     </span>
                     <select
@@ -105,7 +105,7 @@ export function ColumnMapper({
                         <option value={UNSET}>— not mapped —</option>
                         {headers.map((h, i) => (
                             <option key={i} value={i}>
-                                {h || `Column ${i + 1}`}
+                                {h || `column ${i + 1}`}
                             </option>
                         ))}
                     </select>
@@ -115,7 +115,7 @@ export function ColumnMapper({
             {previewRows.length > 0 && (
                 <div className="raw-preview">
                     <p style={{ marginBottom: 6, fontWeight: 600 }}>
-                        Data preview (first {previewRows.length} rows)
+                        data preview (first {previewRows.length} rows)
                     </p>
                     <table>
                         <thead>

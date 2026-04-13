@@ -31,7 +31,7 @@ export function PeopleTab({
             <div className="people-add-row">
                 <input
                     type="text"
-                    placeholder="Name"
+                    placeholder="name"
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     onKeyDown={handleKeyDown}

@@ -57,7 +57,7 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
             try {
                 const text = ev.target?.result;
                 if (typeof text !== "string")
-                    throw new Error("Could not read file");
+                    throw new Error("could not read file");
                 const parsed: unknown = JSON.parse(text);
                 const loaded = validateAppState(parsed);
                 onLoad(loaded);
@@ -66,7 +66,7 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                 setTimeout(() => setLoadSuccess(false), 3000);
             } catch (err) {
                 setLoadError(
-                    err instanceof Error ? err.message : "Unknown error",
+                    err instanceof Error ? err.message : "unknown error",
                 );
                 setLoadSuccess(false);
             }
@@ -119,7 +119,7 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                     </label>
                     {loadError !== null && (
                         <p className="error-msg" style={{ marginTop: 10 }}>
-                            Failed to load: {loadError}
+                            failed to load: {loadError}
                         </p>
                     )}
                     {loadSuccess && (
@@ -130,7 +130,7 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                                 fontSize: 13,
                             }}
                         >
-                            State loaded successfully.
+                            state loaded successfully.
                         </p>
                     )}
                 </div>

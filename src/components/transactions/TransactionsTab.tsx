@@ -29,7 +29,7 @@ function monthKey(datetime: string): string {
 }
 
 function formatMonthKey(key: string): string {
-    if (key === "undated") return "Undated";
+    if (key === "undated") return "undated";
     const [year, month] = key.split("-");
     return new Date(Number(year), Number(month) - 1).toLocaleDateString(
         "en-US",

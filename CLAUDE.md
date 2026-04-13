@@ -14,6 +14,10 @@ npm run deploy    # Build + push dist/ to the `pages` branch for GitHub Pages
 
 No test runner is configured. Formatting uses Prettier with `tabWidth: 4`.
 
+## UI conventions
+
+All hardcoded UI text (labels, button text, placeholders, error messages, headings, empty states) must be **lowercase**. This includes acronyms like "csv" and "json". User-entered content (names, transaction descriptions) is rendered as-is — do not apply `text-transform: lowercase` via CSS, as that would affect user data too.
+
 ## Architecture
 
 IOU is a client-side-only React 19 + TypeScript app built with Vite. There is no backend, database, or authentication. State is persisted to `localStorage` (key `"iou-state"`) and rehydrated on load via `validateAppState`.
