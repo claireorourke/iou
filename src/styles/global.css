@@ -40,6 +40,17 @@ body {
     font-size: 14px;
     color: var(--color-text);
     background-color: var(--color-bg);
+    line-height: 1.5;
+}
+
+/* Fixed background via pseudo-element — works on iOS Safari where
+   background-attachment: fixed is not supported on the body. */
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-color: var(--color-bg);
     background-image:
         radial-gradient(circle, rgba(0, 0, 0, 0.18) 1.5px, transparent 1.5px),
         url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='140'%3E%3Cpath d='M10,70 C40,30 70,110 100,70 C120,50 145,40 190,60' stroke='%23e91e8c' stroke-width='3' fill='none' opacity='0.28' stroke-linecap='round' transform='rotate(38 100 70)'/%3E%3C/svg%3E"),
@@ -77,14 +88,6 @@ body {
         65px 195px,
         185px 125px;
     background-repeat: repeat;
-    background-attachment: fixed;
-    line-height: 1.5;
-}
-
-@media (hover: none) {
-    body {
-        background-attachment: scroll;
-    }
 }
 
 .app {
