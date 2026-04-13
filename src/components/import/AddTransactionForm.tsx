@@ -22,7 +22,10 @@ export function AddTransactionForm({
 
     const parsedAmount = parseFloat(amount);
     const isValid =
-        name.trim() !== "" && !isNaN(parsedAmount) && parsedAmount > 0;
+        name.trim() !== "" &&
+        !isNaN(parsedAmount) &&
+        parsedAmount > 0 &&
+        paidBy !== "";
 
     function handleSubmit(): void {
         if (!isValid) return;
@@ -66,12 +69,6 @@ export function AddTransactionForm({
                                 {p.name}
                             </button>
                         ))}
-                        <button
-                            className={`payer-pill${paidBy === "" ? " payer-pill--active" : ""}`}
-                            onClick={() => setPaidBy("")}
-                        >
-                            unset
-                        </button>
                     </div>
                 </div>
                 <div className="add-tx-form__name">

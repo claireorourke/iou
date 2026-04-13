@@ -44,6 +44,11 @@ export function SplitEditor({
     const mode: SplitMode = draft[0]?.mode ?? "percent";
     const error = validateSplits(draft, transaction.amount);
 
+    const autoSave = onCancel === undefined;
+    React.useEffect(() => {
+        if (autoSave && error === null) onSave(draft, paidBy);
+    }, [autoSave, draft, paidBy, error]);
+
     const assignedTotal = draft.reduce((acc, s) => acc + s.value, 0);
     const remaining =
         mode === "percent"
@@ -133,12 +138,6 @@ export function SplitEditor({
                             {p.name}
                         </button>
                     ))}
-                    <button
-                        className={`payer-pill${paidBy === null ? " payer-pill--active" : ""}`}
-                        onClick={() => setPaidBy(null)}
-                    >
-                        unset
-                    </button>
                 </div>
             </div>
 
@@ -231,20 +230,25 @@ export function SplitEditor({
                 </p>
             )}
 
-            <div className="split-editor__footer">
-                <button
-                    className="btn btn-primary"
-                    onClick={() => onSave(draft, paidBy)}
-                    disabled={error !== null}
-                >
-                    save
-                </button>
-                {onCancel !== undefined && (
-                    <button className="btn btn-secondary" onClick={onCancel}>
-                        cancel
+            {!autoSave && (
+                <div className="split-editor__footer">
+                    <button
+                        className="btn btn-primary"
+                        onClick={() => onSave(draft, paidBy)}
+                        disabled={error !== null}
+                    >
+                        save
                     </button>
-                )}
-            </div>
+                    {onCancel !== undefined && (
+                        <button
+                            className="btn btn-secondary"
+                            onClick={onCancel}
+                        >
+                            cancel
+                        </button>
+                    )}
+                </div>
+            )}
         </div>
     );
 }

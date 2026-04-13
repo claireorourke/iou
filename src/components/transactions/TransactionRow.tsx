@@ -82,9 +82,11 @@ export function TransactionRow({
             <div className="tx-card tx-card--featured">
                 <div className="tx-header">
                     <div className="tx-header__info">
-                        <div className="tx-header__name">
-                            {transaction.name || "(unnamed)"}
-                        </div>
+                        {transaction.name && (
+                            <div className="tx-header__name">
+                                {transaction.name}
+                            </div>
+                        )}
                         {dateStr !== "" && (
                             <div className="tx-header__meta">{dateStr}</div>
                         )}
@@ -97,6 +99,12 @@ export function TransactionRow({
                             <button
                                 className="btn btn-primary"
                                 onClick={() => onConfirm(transaction.id)}
+                                disabled={transaction.paidBy === null}
+                                title={
+                                    transaction.paidBy === null
+                                        ? "select who paid before confirming"
+                                        : undefined
+                                }
                             >
                                 confirm
                             </button>
