@@ -5,11 +5,17 @@ import { validateAppState } from "../../utils.js";
 interface Props {
     state: AppState;
     onLoad: (state: AppState) => void;
+    onReset: () => void;
 }
 
-export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
+export function SaveLoadTab({
+    state,
+    onLoad,
+    onReset,
+}: Props): React.JSX.Element {
     const [loadError, setLoadError] = React.useState<string | null>(null);
     const [loadSuccess, setLoadSuccess] = React.useState(false);
+    const [confirmReset, setConfirmReset] = React.useState(false);
 
     async function handleExport(): Promise<void> {
         const json = JSON.stringify(state, null, 2);
@@ -132,6 +138,56 @@ export function SaveLoadTab({ state, onLoad }: Props): React.JSX.Element {
                         >
                             state loaded successfully.
                         </p>
+                    )}
+                </div>
+
+                <hr
+                    style={{
+                        border: "none",
+                        borderTop: "1px solid var(--color-border)",
+                    }}
+                />
+
+                <div className="saveload-block">
+                    <h3>reset</h3>
+                    <p>
+                        delete all people and transactions. this cannot be
+                        undone.
+                    </p>
+                    {!confirmReset ? (
+                        <button
+                            className="btn btn-danger"
+                            style={{ alignSelf: "flex-start" }}
+                            onClick={() => setConfirmReset(true)}
+                        >
+                            reset all data
+                        </button>
+                    ) : (
+                        <div
+                            style={{
+                                display: "flex",
+                                gap: 8,
+                                alignItems: "center",
+                                flexWrap: "wrap",
+                            }}
+                        >
+                            <span style={{ fontSize: 13 }}>are you sure?</span>
+                            <button
+                                className="btn btn-danger"
+                                onClick={() => {
+                                    onReset();
+                                    setConfirmReset(false);
+                                }}
+                            >
+                                yes, reset
+                            </button>
+                            <button
+                                className="btn btn-secondary"
+                                onClick={() => setConfirmReset(false)}
+                            >
+                                cancel
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

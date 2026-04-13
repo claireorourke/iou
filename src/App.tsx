@@ -183,7 +183,11 @@ export function App(): React.JSX.Element {
                 )}
                 {activeTab === "summary" && <SummaryTab state={state} />}
                 {activeTab === "saveload" && (
-                    <SaveLoadTab state={state} onLoad={importState} />
+                    <SaveLoadTab
+                        state={state}
+                        onLoad={importState}
+                        onReset={() => setState(EMPTY_STATE)}
+                    />
                 )}
                 {activeTab === "people" && (
                     <div className="tab-next-row">
@@ -229,17 +233,6 @@ export function App(): React.JSX.Element {
             <ScrollToTop />
             <footer className="app-footer">
                 <a
-                    className="app-footer-quote"
-                    href={quote.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <span>"{quote.quote}"</span>
-                    <span className="app-footer-quote__attr">
-                        — {quote.character}, <em>{quote.source}</em>
-                    </span>
-                </a>
-                <a
                     className="github-link"
                     href="https://github.com/claireorourke/iou"
                     target="_blank"
@@ -253,6 +246,17 @@ export function App(): React.JSX.Element {
                         width="16"
                         height="16"
                     />
+                </a>
+                <a
+                    className="app-footer-quote"
+                    href={quote.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    <span>"{quote.quote}"</span>
+                    <span className="app-footer-quote__attr">
+                        — {quote.character}, <em>{quote.source}</em>
+                    </span>
                 </a>
             </footer>
         </div>

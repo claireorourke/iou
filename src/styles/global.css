@@ -81,6 +81,12 @@ body {
     line-height: 1.5;
 }
 
+@media (hover: none) {
+    body {
+        background-attachment: scroll;
+    }
+}
+
 .app {
     min-height: 100dvh;
     display: flex;
