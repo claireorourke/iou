@@ -175,24 +175,6 @@ export function TransactionsTab({
 
     return (
         <div>
-            {selectedIds.size > 0 && (
-                <div className="tx-bulk-bar">
-                    <span>{selectedIds.size} selected</span>
-                    <button
-                        className="btn btn-danger btn-sm"
-                        onClick={handleDeleteSelected}
-                    >
-                        delete selected ({selectedIds.size})
-                    </button>
-                    <button
-                        className="btn btn-ghost btn-sm"
-                        onClick={() => setSelectedIds(new Set())}
-                    >
-                        clear selection
-                    </button>
-                </div>
-            )}
-
             <div className="tx-sections">
                 {/* Next Pending */}
                 <div className="tx-section">
@@ -220,6 +202,24 @@ export function TransactionsTab({
                         </div>
                     )}
                 </div>
+
+                {selectedIds.size > 0 && (
+                    <div className="tx-bulk-bar">
+                        <span>{selectedIds.size} selected</span>
+                        <button
+                            className="btn btn-danger btn-sm"
+                            onClick={handleDeleteSelected}
+                        >
+                            delete selected ({selectedIds.size})
+                        </button>
+                        <button
+                            className="btn btn-ghost btn-sm btn-ghost--bordered"
+                            onClick={() => setSelectedIds(new Set())}
+                        >
+                            clear selection
+                        </button>
+                    </div>
+                )}
 
                 {/* Remaining Pending */}
                 {remainingPending.length > 0 && (

@@ -102,12 +102,6 @@ export function TransactionRow({
                             </button>
                         )}
                         <button
-                            className="btn btn-secondary"
-                            onClick={() => setEditing((v) => !v)}
-                        >
-                            {editing ? "close" : "edit splits"}
-                        </button>
-                        <button
                             className="btn btn-ghost"
                             onClick={() => onDelete(transaction.id)}
                             title="Delete transaction"
@@ -116,22 +110,13 @@ export function TransactionRow({
                         </button>
                     </div>
                 </div>
-                {!editing && (
-                    <div className="tx-split-summary">
-                        {splitSummary(transaction, people)}
-                    </div>
-                )}
-                {editing && (
-                    <SplitEditor
-                        transaction={transaction}
-                        people={people}
-                        onSave={(splits, paidBy) => {
-                            onUpdate(transaction.id, splits, paidBy);
-                            setEditing(false);
-                        }}
-                        onCancel={() => setEditing(false)}
-                    />
-                )}
+                <SplitEditor
+                    transaction={transaction}
+                    people={people}
+                    onSave={(splits, paidBy) => {
+                        onUpdate(transaction.id, splits, paidBy);
+                    }}
+                />
             </div>
         );
     }
@@ -156,15 +141,15 @@ export function TransactionRow({
                 <span className="tx-row__amount">
                     ${transaction.amount.toFixed(2)}
                 </span>
+                {dateStr !== "" && (
+                    <span className="tx-row__date">{dateStr}</span>
+                )}
                 {!editing && (
                     <span
                         className={`tx-row__payer${transaction.paidBy === null ? " tx-row__payer--unset" : ""}`}
                     >
                         {payerString(transaction, people)}
                     </span>
-                )}
-                {dateStr !== "" && (
-                    <span className="tx-row__date">{dateStr}</span>
                 )}
                 {!editing && splitsString(transaction, people) !== "" && (
                     <span className="tx-row__splits">

@@ -12,7 +12,7 @@ interface Props {
     transaction: Transaction;
     people: Person[];
     onSave: (splits: SplitEntry[], paidBy: PersonId | null) => void;
-    onCancel: () => void;
+    onCancel?: () => void;
 }
 
 function initDraft(transaction: Transaction, people: Person[]): SplitEntry[] {
@@ -124,12 +124,6 @@ export function SplitEditor({
             <div className="split-editor__payer">
                 <span className="payer-label">paid by</span>
                 <div className="payer-pills" role="group" aria-label="paid by">
-                    <button
-                        className={`payer-pill${paidBy === null ? " payer-pill--active" : ""}`}
-                        onClick={() => setPaidBy(null)}
-                    >
-                        unset
-                    </button>
                     {people.map((p) => (
                         <button
                             key={p.id}
@@ -139,6 +133,12 @@ export function SplitEditor({
                             {p.name}
                         </button>
                     ))}
+                    <button
+                        className={`payer-pill${paidBy === null ? " payer-pill--active" : ""}`}
+                        onClick={() => setPaidBy(null)}
+                    >
+                        unset
+                    </button>
                 </div>
             </div>
 
@@ -205,13 +205,7 @@ export function SplitEditor({
                                 {mode === "percent" ? "%" : "$"}
                             </span>
                             {mode === "percent" && (
-                                <span
-                                    className="split-editor__unit"
-                                    style={{
-                                        color: "var(--color-text-muted)",
-                                        width: "auto",
-                                    }}
-                                >
+                                <span className="split-editor__calc">
                                     = $
                                     {((val / 100) * transaction.amount).toFixed(
                                         2,
@@ -245,9 +239,11 @@ export function SplitEditor({
                 >
                     save
                 </button>
-                <button className="btn btn-secondary" onClick={onCancel}>
-                    cancel
-                </button>
+                {onCancel !== undefined && (
+                    <button className="btn btn-secondary" onClick={onCancel}>
+                        cancel
+                    </button>
+                )}
             </div>
         </div>
     );

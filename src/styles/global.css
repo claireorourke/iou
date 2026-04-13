@@ -190,17 +190,6 @@ body {
     flex-shrink: 0;
 }
 
-@media (max-width: 480px) {
-    .tab-bar {
-        padding: 0 max(0px, env(safe-area-inset-left));
-    }
-
-    .tab-bar button {
-        padding: 12px 12px;
-        font-size: 12px;
-    }
-}
-
 .tab-bar button:hover {
     color: #000;
 }
@@ -303,6 +292,10 @@ select:focus {
     background: #ffe0d4;
     border-color: #000;
     box-shadow: 2px 2px 0 #000;
+}
+
+.btn-ghost--bordered {
+    border-color: #000;
 }
 
 /* Card */
@@ -678,6 +671,13 @@ select:focus {
     font-weight: 600;
 }
 
+.split-editor__calc {
+    color: var(--color-text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
 .split-editor__remaining {
     font-size: 13px;
     font-weight: 700;
@@ -954,7 +954,6 @@ select:focus {
     box-shadow: 4px 4px 0 #000;
     font-size: 13px;
     font-weight: 700;
-    margin-bottom: 8px;
 }
 
 /* ── Small button variant ─────────────────────────────────────── */
@@ -1038,4 +1037,155 @@ select:focus {
 .scroll-to-top:active {
     transform: translate(2px, 2px);
     box-shadow: 1px 1px 0 #000;
+}
+
+/* ── Mobile overrides (must be after all component rules to win on specificity) ── */
+@media (max-width: 480px) {
+    .tab-bar {
+        padding: 0 max(0px, env(safe-area-inset-left));
+    }
+
+    .tab-bar button {
+        padding: 12px 12px;
+        font-size: 12px;
+    }
+
+    .app-content {
+        padding: 20px 16px;
+    }
+
+    /* ── Featured card (next pending): left col = name/date/amount, right col = buttons ── */
+    .tx-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 4px 12px;
+        align-items: start;
+    }
+
+    .tx-header__info {
+        grid-column: 1;
+        grid-row: 1;
+    }
+
+    .tx-header__amount {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .tx-header__actions {
+        grid-column: 2;
+        grid-row: 1 / 3;
+        align-self: center;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    /* ── Compact transaction rows: left col = name/amount/date/payer, right col = buttons ── */
+    /* 3-col grid: [checkbox?] [content] [actions] */
+    .tx-row {
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        row-gap: 2px;
+        column-gap: 8px;
+        align-items: start;
+        padding: 10px 12px;
+    }
+
+    .tx-row > input[type="checkbox"] {
+        grid-column: 1;
+        grid-row: 1 / 5;
+        align-self: center;
+    }
+
+    .tx-row__name {
+        grid-column: 2;
+        grid-row: 1;
+        white-space: normal;
+        overflow: visible;
+        text-overflow: unset;
+    }
+
+    .tx-row__amount {
+        grid-column: 2;
+        grid-row: 2;
+        font-size: 15px;
+        text-align: left;
+    }
+
+    .tx-row__date {
+        grid-column: 2;
+        grid-row: 3;
+        overflow: visible;
+        white-space: normal;
+        text-overflow: unset;
+    }
+
+    .tx-row__payer {
+        grid-column: 2;
+        grid-row: 4;
+        overflow: visible;
+        white-space: normal;
+        text-overflow: unset;
+    }
+
+    .tx-row__actions {
+        grid-column: 3;
+        grid-row: 1 / 5;
+        align-self: center;
+    }
+
+    .tx-row__splits {
+        display: none;
+    }
+
+    /* ── Split editor: name full-width, then slider+input+unit, then calc below ── */
+    .split-editor__row {
+        flex-wrap: wrap;
+        row-gap: 4px;
+    }
+
+    .split-editor__person {
+        flex: 0 0 100%;
+        width: auto;
+        order: 1;
+    }
+
+    .split-editor__slider {
+        flex: 1 1 auto;
+        order: 2;
+        min-width: 80px;
+    }
+
+    .split-editor__input {
+        flex: 0 0 90px;
+        order: 3;
+    }
+
+    .split-editor__unit {
+        flex: 0 0 30px;
+        order: 4;
+    }
+
+    .split-editor__calc {
+        flex: 0 0 100%;
+        order: 5;
+        text-align: right;
+        padding-right: 0;
+        margin-top: -2px;
+    }
+
+    /* ── Column mapper ── */
+    .column-mapper__row {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+    }
+
+    .column-mapper__label {
+        width: auto;
+    }
+
+    .column-mapper__select {
+        width: 100%;
+    }
 }
